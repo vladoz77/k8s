@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    service: nginx-service
+spec:
+  type: NodePort
+  selector:
+    deploy: nginx-deploy
+  ports:
+  - port: 80
+    nodePort: 30010
+    targetPort: 80
+  

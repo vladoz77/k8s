@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod
+  labels:
+    name: mypod
+spec:
+  volumes:
+    - name: configmap
+      configMap:
+        name: webindex
+  containers:
+  - name: busybox
+    image: busybox
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    command: ["sleep", "300"]
+    volumeMounts:
+      - mountPath: /tmp
+        name: configmap
+        readOnly: true
+      
+   
