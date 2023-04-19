@@ -22,6 +22,6 @@ spec:
             cpu: "500m"
         ports:
         - name: tomcat
-          containerPort: 8080
+          containerPort: 80
           protocol: TCP
           

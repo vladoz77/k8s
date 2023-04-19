@@ -1,6 +1,9 @@
 {
     "yaml.schemas": {
-        "kubernetes://schema/apps/v1%40statefulset": "file:///home/vlad/k8s/statefull-app.yaml",
+        "kubernetes://schema/apps/v1%40statefulset": [
+            "file:///home/vlad/k8s/statefull-app.yaml",
+            "file:///home/vlad/k8s/statefullset.yaml"
+        ],
         "kubernetes://schema/apps/v1@deployment": [
             "file:///home/vlad/k8s/nginx-sidecard.yaml",
             "file:///home/vlad/k8s/busybox.yaml"

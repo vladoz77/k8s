@@ -20,16 +20,18 @@ spec:
       #     persistentVolumeClaim:
       #       claimName: pvc-nfs-data
       containers:
-      - name: myapp
+      - name: nginx-app
         image: nginx
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
+          name: web
         # volumeMounts:
         #   - mountPath: /usr/share/nginx/html
         #     name: www
         #   - mountPath: /var/log/nginx
         #     name: data
+  
