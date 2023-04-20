@@ -3,8 +3,9 @@ kind: Service
 metadata:
   name: nginx-clusterip
 spec:
-  selector:
-    app: nginx-app
+  clusterIP: None
+  # selector:
+  #   app: nginx-app
   ports:
   - port: 81
     targetPort: web

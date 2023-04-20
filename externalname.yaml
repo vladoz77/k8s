@@ -3,6 +3,5 @@ kind: Service
 metadata:
   name: yandex
 spec:
-  
   type: ExternalName
-  externalName: mail.ru
+  externalName: tn.ru
