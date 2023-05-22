@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: affinity-pod
+  labels:
+    name: affinity-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+           - matchExpressions:
+               - key: color
+                 operator: NotIn
+                 values:
+                   - red
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - preference:
+            matchExpressions:
+              - key: color
+                operator: In
+                values:
+                  - blue
+          weight: 10
+  containers:
+  - name: affinity-pod
+    image: nginx
+    imagePullPolicy: IfNotPresent
