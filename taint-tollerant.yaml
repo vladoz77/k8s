@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tollerant-pod
+  labels:
+    name: tollerant-pod
+spec:
+  containers:
+  - name: myapp
+    image: nginx
+  tolerations:
+    - key: color
+      effect: NoSchedule
+      value: blue
+      operator: Equal
+    - key: key2
+      effect: NoExecute
+      value: value2
+      operator: Equal
