@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-nfs-data
 spec:
-  storageClassName: nfs-data
+  storageClassName: nfs-client
   resources:
     requests:
       storage: 2Gi

@@ -12,26 +12,22 @@ spec:
       labels:
         app: nginx-app
     spec:
-      # volumes:
+      volumes:
       #   - name: www
       #     persistentVolumeClaim:
       #       claimName: pvc-nfs-www
-      #   - name: data
-      #     persistentVolumeClaim:
-      #       claimName: pvc-nfs-data
+        - name: data
+          persistentVolumeClaim:
+            claimName: pvc-nfs-data
       containers:
       - name: nginx-app
         image: nginx
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 80
           name: web
-        # volumeMounts:
+        volumeMounts:
         #   - mountPath: /usr/share/nginx/html
         #     name: www
-        #   - mountPath: /var/log/nginx
-        #     name: data
+          - mountPath: /var/log/nginx
+            name: data
   
