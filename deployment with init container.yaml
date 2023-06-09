@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: default
+spec:
+  selector:
+    app: nginx-app
+  ports:
+  - name: nginx
+    protocol: TCP
+    port: 80
+    
+    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  nginx-deployment
+  namespace: default
+  labels:
+    app:  nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  nginx-app
+    spec:
+      volumes:
+        - name: www
+          persistentVolumeClaim:
+            claimName: pvc-www
+        - name: index
+          configMap:
+            name: html
+      initContainers:
+      - name: init-config
+        image: busybox:1.28
+        command: ['sh', '-c', 'cp /html-tmp/index.html /html/index.html']
+        volumeMounts:
+         - name: index
+           mountPath: /html-tmp
+         - name: www
+           mountPath: /html
+      containers:
+      - name:  nginx
+        image:  nginx
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+        ports: 
+          - containerPort: 80
+            name: nginx
+     
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-www
+  namespace: default
+  labels:
+    app: pvc-www
+spec:
+  storageClassName: nfs-client
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+        
