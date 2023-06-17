@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-sts
+  namespace: database
+spec:
+  selector:
+    matchLabels:
+      app: postgresql-app
+  serviceName: postgresql-svc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql-app
+    spec:
+      
+      volumes:
+        - name: postgresql-conf-volume
+          configMap:
+            name: postgresql-conf-file
+        
+      containers:
+      - name: postgresql
+        
+        image: postgres:14
+        
+        args: ["-c", "config_file=/etc/postgresql.conf"]
+        
+        envFrom:
+          - configMapRef:
+              name: postgresql-config
+        
+        resources:
+          requests:
+            memory: "265Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+       
+        ports:
+        - containerPort: 5432
+          name: psql
+        
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/postgresql/data
+        
+        - name: postgresql-conf-volume
+          mountPath: /etc/postgresql.conf
+          subPath: postgresql.conf
+  
+  volumeClaimTemplates:
+  - metadata:
+      name: db
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: nfs
+      resources:
+        requests:
+          storage: 10Gi
