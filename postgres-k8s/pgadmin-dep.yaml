@@ -13,6 +13,10 @@ spec:
       labels:
         app: pgadmin-app
     spec:
+      volumes:
+        - name: pgadmin-data
+          persistentVolumeClaim:
+            claimName: data
       containers:
       - name: pgadmin4
         image: dpage/pgadmin4
@@ -28,3 +32,24 @@ spec:
         ports:
         - containerPort: 80
           name: pgadmin-port
+        volumeMounts:
+          - name: pgadmin-data
+            mountPath: /var/lib/pgadmin
+        resources:
+          {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data
+  namespace: database
+spec:
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+
