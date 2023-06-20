@@ -350,3 +350,16 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: postgresql-conf-file
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-config
+  namespace: database
+data:
+#env
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "secret"
+  POSTGRES_DB: "database"
+  PGDATA : /var/lib/postgresql/data/pgdata
