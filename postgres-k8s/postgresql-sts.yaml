@@ -88,7 +88,7 @@ spec:
       name: db
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: nfs
+      storageClassName: nfs-client
       resources:
         requests:
           storage: 10Gi
