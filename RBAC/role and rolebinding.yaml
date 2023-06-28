@@ -1,14 +1,16 @@
+# ServiceAccount
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: assa
   namespace: default
 ---
-
+#Role
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: assa-role
+  namespace: default
 rules: 
   - apiGroups: 
      - ""
@@ -19,7 +21,7 @@ rules:
      - get
      - watch
 ---
-
+#Rolebinding
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:

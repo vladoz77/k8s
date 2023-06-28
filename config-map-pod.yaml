@@ -1,7 +1,25 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: webindex
+data: 
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Тестовая страница</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+      <h1>Сервер $SERVER</h1>
+    </body>
+    </html>
+---
+
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod
+  name: pod-nginx
   labels:
     name: mypod
 spec:
@@ -10,15 +28,15 @@ spec:
       configMap:
         name: webindex
   containers:
-  - name: busybox
-    image: busybox
+  - name: nginx-app
+    image: nginx
     resources:
       limits:
         memory: "128Mi"
         cpu: "500m"
     command: ["sleep", "300"]
     volumeMounts:
-      - mountPath: /tmp
+      - mountPath: /usr/share/nginx/html
         name: configmap
         readOnly: true
       
