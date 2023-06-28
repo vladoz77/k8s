@@ -28,14 +28,22 @@ spec:
 
 ---
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: postgresql-config
+  name: pg-secret
   namespace: database
-data:
-#env
+type: Opaque
+stringData:
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "secret"
+  
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pg-config
+  namespace: database
+data:
   POSTGRES_DB: "database"
   PGDATA : /var/lib/postgresql/data/pgdata
 
@@ -66,7 +74,9 @@ spec:
         args: ["-c", "config_file=/etc/postgresql.conf"]
         envFrom:
           - configMapRef:
-              name: postgresql-config
+              name: pg-config
+          - secretRef:
+              name: pg-secret
         resources:
           requests:
             memory: "265Mi"

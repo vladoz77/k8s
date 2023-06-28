@@ -16,19 +16,16 @@ spec:
       volumes:
         - name: pgadmin-data
           persistentVolumeClaim:
-            claimName: data
+            claimName: data-pgadmin
       containers:
       - name: pgadmin4
         image: dpage/pgadmin4
-        env:
-         - name: PGADMIN_DEFAULT_EMAIL
-           value: user@domain.com
-         - name: PGADMIN_DEFAULT_PASSWORD
-           value: password
-         - name: PGADMIN_PORT
-           value: "80"
-         - name:  PGADMIN_CONFIG_SERVER_MODE
-           value: "False"
+        envFrom:
+          - configMapRef:
+              name: pgadmin-cofigmap
+          - secretRef:
+              name: secret-pgadmin
+          
         ports:
         - containerPort: 80
           name: pgadmin-port
@@ -42,15 +39,39 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-          
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgadmin-cofigmap
+  namespace: database
+data:
+  PGADMIN_PORT: "80"
+  PGADMIN_CONFIG_SERVER_MODE: "False"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-pgadmin
+  namespace: database
+type: Opaque
+stringData:
+  PGADMIN_DEFAULT_EMAIL: user@domain.com
+  PGADMIN_DEFAULT_PASSWORD: password
+  
+
+  
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: data
+  name: data-pgadmin
   namespace: database
 spec:
-  storageClassName: nfs
+  storageClassName: nfs-client
   resources:
     requests:
       storage: 2Gi
