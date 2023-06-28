@@ -36,8 +36,13 @@ spec:
           - name: pgadmin-data
             mountPath: /var/lib/pgadmin
         resources:
-          {}
-
+          requests:
+            memory: "265Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -53,3 +58,17 @@ spec:
   accessModes:
     - ReadWriteOnce
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-dep
+  namespace: database
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: pgadmin-port
+  selector:
+    app: pgadmin-app
+  type: LoadBalancer
