@@ -1,6 +1,6 @@
 
 # #Create CA
-k create secret tls kube-ca-secret -n database --cert /etc/kubernetes/pki/ca.crt --key /etc/kubernetes/pki/ca.key 
+#k create secret tls kube-ca-secret -n database --cert /etc/kubernetes/pki/ca.crt --key /etc/kubernetes/pki/ca.key 
 
 # apiVersion: cert-manager.io/v1
 # kind: Certificate

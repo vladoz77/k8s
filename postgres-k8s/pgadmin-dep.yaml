@@ -104,11 +104,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - pgadmin.local
+    - pgadmin.home.local
     secretName: pgadmin-crt-secret
   ingressClassName: nginx
   rules:
-  - host: pgadmin.local
+  - host: pgadmin.home.local
     http:
       paths:
       - backend:
