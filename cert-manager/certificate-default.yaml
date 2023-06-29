@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: my-issuer-default
+  namespace: default
+spec:
+  ca:
+    secretName: kube-ca-secret
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-cert
+  namespace: default
+spec:
+  duration: 9125h # 1y
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+    - k8s
+  secretName: nginx-cert-secret
+  issuerRef:
+    name: my-issuer-default
+    kind: Issuer
+  commonName: "web.local"
+  dnsNames:
+  - "web.local"

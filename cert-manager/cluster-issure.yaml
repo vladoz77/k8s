@@ -1,0 +1,36 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-cluster-issure
+spec:
+  selfSigned: {}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata: 
+  name: my-selfsigned-ca
+  namespace: default
+spec:
+  isCA: true
+  commonName: my-selfsigned-ca
+  secretName: root-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-cluster-issure
+    kind: ClusterIssuer
+ 
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: my-ca-issuer
+  namespace: default
+spec:
+  ca:
+    secretName: root-secret
+
+
+
