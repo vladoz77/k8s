@@ -99,6 +99,8 @@ kind: Ingress
 metadata:
   name: pgadmin-ingress
   namespace: database
+  annotations:
+    cert-manager.io/cluster-issure:  issuer-database
 spec:
   tls:
   - hosts:

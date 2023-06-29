@@ -1,0 +1,41 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: default-selfsigned-CA
+  namespace: default
+spec:
+  isCA: true
+  commonName: default-selfsigned-CA
+  secretName: root-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-issuer-CA
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: my-issuer-default
+  namespace: default
+spec:
+  ca:
+    secretName: root-secret
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-crt
+spec:
+  secretName: nginx-crt
+  issuerRef:
+    name: my-issuer-default
+    kind: Issuer
+  commonName: "web.local"
+  dnsNames:
+  - "web.local"

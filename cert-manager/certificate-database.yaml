@@ -1,13 +1,12 @@
-#Create CA
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: kube-ca-crt
+  name: my-selfsigned-ca
   namespace: database
 spec:
   isCA: true
-  commonName: kube-ca
-  secretName: kube-ca-secret
+  commonName: my-selfsigned-ca
+  secretName: root-secret
   privateKey:
     algorithm: ECDSA
     size: 256
@@ -16,16 +15,15 @@ spec:
     kind: ClusterIssuer
     group: cert-manager.io
 
-#Create cert for pgadmin.local
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: issuer-database
+  name: my-ca-issuer-database
   namespace: database
 spec:
   ca:
-    secretName: kube-ca-secret
+    secretName: root-secret
 
 ---
 apiVersion: cert-manager.io/v1
@@ -34,10 +32,10 @@ metadata:
   name: pgadmin-crt
   namespace: database
 spec:
-  secretName: pgadmin-crt-secret
+  secretName: pgadmin-crt-crt
   issuerRef:
-    name: issuer-database
+    name: my-ca-issuer-database
     kind: Issuer
-  commonName: pgadmin.local
+  commonName: pgadmin-crt
   dnsNames:
   - "pgadmin.local"
