@@ -25,9 +25,10 @@ spec:
         ports:
         - containerPort: 80
           name: web
+        resources: {}
         volumeMounts:
-        #   - mountPath: /usr/share/nginx/html
-        #     name: www
+          - mountPath: /usr/share/nginx/html
+            name: www
           - mountPath: /var/log/nginx
             name: data
   

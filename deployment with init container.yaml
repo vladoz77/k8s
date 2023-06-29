@@ -34,18 +34,18 @@ spec:
         - name: www
           persistentVolumeClaim:
             claimName: pvc-www
-        - name: index
-          configMap:
-            name: html
-      initContainers:
-      - name: init-config
-        image: busybox:1.28
-        command: ['sh', '-c', 'cp /html-tmp/index.html /html/index.html']
-        volumeMounts:
-         - name: index
-           mountPath: /html-tmp
-         - name: www
-           mountPath: /html
+        # - name: index
+        #   configMap:
+        #     name: html
+      # initContainers:
+      # - name: init-config
+      #   image: busybox:1.28
+      #   command: ['sh', '-c', 'cp /html-tmp/index.html /html/index.html']
+      #   volumeMounts:
+      #    - name: index
+      #      mountPath: /html-tmp
+      #    - name: www
+      #      mountPath: /html
       containers:
       - name:  nginx
         image:  nginx
@@ -74,7 +74,7 @@ metadata:
   labels:
     app: pvc-www
 spec:
-  storageClassName: nfs-client
+  storageClassName: nfs
   accessModes:
   - ReadWriteOnce
   resources:
