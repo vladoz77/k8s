@@ -1,20 +1,23 @@
-#Create CA
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: kube-ca-crt
-  namespace: database
-spec:
-  isCA: true
-  commonName: kube-ca
-  secretName: kube-ca-secret
-  privateKey:
-    algorithm: ECDSA
-    size: 256
-  issuerRef:
-    name: selfsigned-issuer-ca
-    kind: ClusterIssuer
-    group: cert-manager.io
+
+# #Create CA
+k create secret tls kube-ca-secret -n database --cert /etc/kubernetes/pki/ca.crt --key /etc/kubernetes/pki/ca.key 
+
+# apiVersion: cert-manager.io/v1
+# kind: Certificate
+# metadata:
+#   name: kube-ca-crt
+#   namespace: database
+# spec:
+#   isCA: true
+#   commonName: kube-ca
+#   secretName: kube-ca-secret
+#   privateKey:
+#     algorithm: ECDSA
+#     size: 256
+#   issuerRef:
+#     name: selfsigned-issuer-ca
+#     kind: ClusterIssuer
+#     group: cert-manager.io
 
 #Create cert for pgadmin.local
 ---
