@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: nginx-app
@@ -12,13 +12,20 @@ spec:
       labels:
         app: nginx-app
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+             - matchExpressions:
+                 - key: color
+                   operator: In
+                   values:
+                     - red
       volumes:
-      #   - name: www
-      #     persistentVolumeClaim:
-      #       claimName: pvc-nfs-www
-        - name: data
-          persistentVolumeClaim:
-            claimName: pvc-nfs-data
+        - name: www
+          hostPath:
+            path: /var/www
+            type: DirectoryOrCreate
       containers:
       - name: nginx-app
         image: nginx
@@ -29,6 +36,5 @@ spec:
         volumeMounts:
           - mountPath: /usr/share/nginx/html
             name: www
-          - mountPath: /var/log/nginx
-            name: data
+         
   
