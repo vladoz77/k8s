@@ -9,12 +9,12 @@ metadata:
 spec:
   tls:
   - hosts:
-    - argocd.local
+    - argocd.home.local
     secretName: argocd-cert-secret
 
   ingressClassName: nginx
   rules:
-  - host: argocd.local
+  - host: argocd.home.local
     http:
       paths:
       - backend:
