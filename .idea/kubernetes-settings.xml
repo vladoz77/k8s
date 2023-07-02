@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KubernetesApiSettings">
+    <option name="configPaths">
+      <list>
+        <option value="$USER_HOME$/.kube/config" />
+      </list>
+    </option>
+  </component>
+  <component name="KubernetesSettings">
+    <option name="apiVersion" value="1.27" />
+  </component>
+</project>
