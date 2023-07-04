@@ -12,7 +12,6 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
   name: addresspools.metallb.io
 spec:
   conversion:
