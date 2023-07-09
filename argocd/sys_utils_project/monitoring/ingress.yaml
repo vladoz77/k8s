@@ -16,4 +16,11 @@ spec:
                 name: vmsingle-vmsingle-pvc
                 port:
                   number: 8429
+          - pathType: Prefix
+            path: /vmagent
+            backend:
+              service:
+                name: vmagent-vmagent
+                port:
+                  number: 8429
       
