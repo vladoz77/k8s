@@ -4,7 +4,8 @@ metadata:
   name: vmsingle-pvc
   namespace: monitoring
 spec:
-  # Add fields here
+  extraArgs:
+      http.pathPrefix: /vm
   retentionPeriod: "1"
   removePvcAfterDelete: true
   storage:

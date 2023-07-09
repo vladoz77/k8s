@@ -9,7 +9,7 @@ spec:
   project: sys-utils
   source:
     repoURL: 'https://github.com/vladoz77/k8s.git'
-    path: argocd/sys_utils_project/priority_class
+    path: argocd/sys_utils_project/metric-server
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
