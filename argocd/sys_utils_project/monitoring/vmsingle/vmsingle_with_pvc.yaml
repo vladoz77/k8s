@@ -1,0 +1,16 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMSingle
+metadata:
+  name: vmsingle-pvc
+  namespace: monitoring
+spec:
+  # Add fields here
+  retentionPeriod: "1"
+  removePvcAfterDelete: true
+  storage:
+    storageClassName: nfs
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
