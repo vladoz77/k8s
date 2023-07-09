@@ -1,3 +1,17 @@
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: pvc-nfs-data
+# spec:
+#   storageClassName: nfs-client
+#   resources:
+#     requests:
+#       storage: 2Gi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteOnce
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,29 +26,36 @@ spec:
       labels:
         app: nginx-app
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-             - matchExpressions:
-                 - key: color
-                   operator: In
-                   values:
-                     - red
-      volumes:
-        - name: www
-          hostPath:
-            path: /var/www
-            type: DirectoryOrCreate
+      # volumes:
+      #   - name: www
+      #     persistentVolumeClaim:
+      #       claimName: pvc-nfs-data
       containers:
       - name: nginx-app
         image: nginx
         ports:
         - containerPort: 80
           name: web
-        resources: {}
-        volumeMounts:
-          - mountPath: /usr/share/nginx/html
-            name: www
-         
+        resources: 
+          limits:
+            cpu: 50m
+            memory: 50Mi
+          requests: 
+            cpu: 10m
+            memory: 10Mi
+        # volumeMounts:
+        #   - mountPath: /usr/share/nginx/html
+        #     name: www
+---       
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-app-service
+spec:
+  selector:
+    app: nginx-app
+  ports:
+  - port: 80
+    name: web
+
   
