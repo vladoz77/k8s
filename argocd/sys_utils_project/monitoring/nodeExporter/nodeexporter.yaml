@@ -10,59 +10,80 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: node-exporter
+      app.kubernetes.io/name: node-exporter
   template:
     metadata:
       labels:
-        app: node-exporter
+        app.kubernetes.io/name: node-exporter
+        jobLabel: node-exporter
     spec:
-      hostPID: true
-      hostIPC: true
-      hostNetwork: true
-      tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        effect: NoSchedule
-      priorityClassName: medium-priority
+      volumes:
+      - name: proc
+        hostPath:
+          path: /proc
+          type: ''
+      - name: sys
+        hostPath:
+          path: /sys
+          type: ''
+      - name: root
+        hostPath:
+          path: /
+          type: ''
       containers:
       - name: node-exporter
-        image: prom/node-exporter:v1.6.0
+        image: quay.io/prometheus/node-exporter:v1.4.0
         args:
         - '--path.procfs=/host/proc'
         - '--path.sysfs=/host/sys'
         - '--path.rootfs=/host/root'
-        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker|var/lib/containerd|var/lib/containers/.+)($|/)
-        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$
+        - '--web.listen-address=[$(HOST_IP)]:9100'
+        - '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)'
+        - '--collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$'
         ports:
-        - containerPort: 9100
-          name: http-metrics
-        resources:
-          limits:
-            cpu: 200m
-            memory: 100Mi
-          requests:
-            cpu: 10m
-            memory: 24Mi
+        - name: http-metrics
+          hostPort: 9100
+          containerPort: 9100
+          protocol: TCP
+        env:
+        - name: HOST_IP
+          value: 0.0.0.0
+        resources: {}
         volumeMounts:
-        - mountPath: /host/sys
-          name: sys
+        - name: proc
           readOnly: true
-        - mountPath: /host/root
-          name: root
+          mountPath: /host/proc
+        - name: sys
           readOnly: true
-        - mountPath: /host/proc
-          name: proc
+          mountPath: /host/sys
+        - name: root
           readOnly: true
-      volumes:
-      - name: sys
-        hostPath:
-          path: /sys
-      - name: root
-        hostPath:
-          path: /
-      - name: proc
-        hostPath:
-          path: /proc
-
+          mountPath: /host/root
+          mountPropagation: HostToContainer
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9100
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 9100
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+      restartPolicy: Always
+      hostNetwork: true
+      hostPID: true
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
 ---
 apiVersion: v1
 kind: Service
@@ -74,7 +95,7 @@ metadata:
     jobLabel: node-exporter
 spec:
   selector:
-    app: node-exporter
+    app.kubernetes.io/name: node-exporter
   ports:
   - port: 9100
     name: http-metrics
@@ -94,7 +115,7 @@ spec:
       regex: /var/lib/kubelet/pods.+
       source_labels:
       - mountpoint
-    port: metrics
+    port: http-metrics
   jobLabel: jobLabel
   selector:
     matchLabels:
