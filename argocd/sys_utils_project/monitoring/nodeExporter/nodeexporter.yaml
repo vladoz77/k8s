@@ -81,18 +81,21 @@ spec:
 
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
-kind: VMPodScrape
+kind: VMServiceScrape
 metadata:
+  labels:
+    app.kubernetes.io/name: node-exporter
   name: node-exporter
   namespace: monitoring
 spec:
+  endpoints:
+  - metricRelabelConfigs:
+    - action: drop
+      regex: /var/lib/kubelet/pods.+
+      source_labels:
+      - mountpoint
+    port: metrics
+  jobLabel: jobLabel
   selector:
     matchLabels:
-      app: node-exporter
-  podMetricsEndpoints:
-  - port: http-metrics
-    relabelConfigs:
-    - sourceLabels:
-      - "__meta_kubernetes_pod_node_name"
-      action: replace
-      targetLabel: instance
+      app.kubernetes.io/name: node-exporter-service

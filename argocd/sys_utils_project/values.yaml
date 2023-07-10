@@ -113,46 +113,44 @@ vmsingle:
       tag: v1.91.3
     retentionPeriod: "14"
     replicaCount: 1
-    extraArgs: 
-      http.pathPrefix: /vmsingle
+    extraArgs: {}
     storage:
-      storageClassName: nfs
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
           storage: 20Gi
   ingress:
-    enabled: true
+    enabled: false
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    ingressClassName: nginx
+    # ingressClassName: nginx
     # Values can be templated
     annotations:
       {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     labels: {}
-    # path: /vmsingle
+    path: /
     # pathType is only for k8s > 1.19
     pathType: Prefix
 
     hosts:
-      - mon.home.local
+      - vmsingle.domain.com
     ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-    extraPaths: 
-    # - path: /vmsingle
+    extraPaths: []
+    # - path: /*
     #   backend:
     #     serviceName: ssl-redirect
     #     servicePort: use-annotation
     ## Or for k8s > 1.19
-    - path: /vmsingle
-      pathType: Prefix
-      backend:
-        service:
-          name: vmsingle-vm-victoria-metrics-k8s-stack
-          port:
-            name: "8429"
+    # - path: /*
+    #   pathType: Prefix
+    #   backend:
+    #     service:
+    #       name: ssl-redirect
+    #       port:
+    #         name: service
     tls: []
     #  - secretName: vmsingle-ingress-tls
     #    hosts:
@@ -324,7 +322,7 @@ vmcluster:
       #      - vminsert.domain.com
 
 alertmanager:
-  enabled: false
+  enabled: true
   annotations: {}
   # spec for VMAlertmanager crd
   # https://docs.victoriametrics.com/operator/api.html#vmalertmanagerspec
@@ -494,7 +492,7 @@ alertmanager:
 
 vmalert:
   annotations: {}
-  enabled: false
+  enabled: true
 
   # Controls whether VMAlert should use VMAgent or VMInsert as a target for remotewrite
   remoteWriteVMAgent: false
@@ -560,8 +558,8 @@ vmagent:
   # https://docs.victoriametrics.com/operator/api.html#vmagentremotewritespec
   # defined spec will be added to the remoteWrite configuration of VMAgent
   additionalRemoteWrites:
-    
-    - url: http://vmsingle-vm-victoria-metrics-k8s-stack:8429/api/v1/write/vmsingle
+    []
+    #- url: http://some-remote-write/api/v1/write
   # spec for VMAgent crd
   # https://docs.victoriametrics.com/operator/api.html#vmagentspec
   spec:
@@ -573,38 +571,37 @@ vmagent:
       cluster: cluster-name
     extraArgs:
       promscrape.streamParse: "true"
-      http.pathPrefix: /vmagent
   ingress:
-    enabled: true
+    enabled: false
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    ingressClassName: nginx
+    # ingressClassName: nginx
     # Values can be templated
     annotations:
       {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     labels: {}
-    # path: /vmagent
+    path: /
     # pathType is only for k8s > 1.19
     pathType: Prefix
 
     hosts:
-      - mon.home.local
+      - vmagent.domain.com
     ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-    extraPaths: 
+    extraPaths: []
     # - path: /*
     #   backend:
     #     serviceName: ssl-redirect
     #     servicePort: use-annotation
     ## Or for k8s > 1.19
-    - path: /vmagent
-      pathType: Prefix
-      backend:
-        service:
-          name: vmagent-vm-victoria-metrics-k8s-stack
-          port:
-            name: "8429"
+    # - path: /*
+    #   pathType: Prefix
+    #   backend:
+    #     service:
+    #       name: ssl-redirect
+    #       port:
+    #         name: service
     tls: []
     #  - secretName: vmagent-ingress-tls
     #    hosts:
@@ -685,12 +682,12 @@ grafana:
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     labels: {}
-    path: /grafana
+    path: /
     # pathType is only for k8s > 1.19
     pathType: Prefix
 
     hosts:
-      - mon.home.local
+      - grafana.domain.com
     ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
     extraPaths: []
     # - path: /*
@@ -853,7 +850,6 @@ kubeControllerManager:
         tlsConfig:
           caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           serverName: kubernetes
-          insecureSkipVerify: true
 
 # -Component scraping kubeDns. Use either this or coreDns
 kubeDns:
@@ -944,8 +940,8 @@ kubeScheduler:
   ##
   service:
     enabled: true
-    port: 10259
-    targetPort: 10259
+    port: 10251
+    targetPort: 10251
     # selector:
     #   component: kube-scheduler
 
@@ -965,7 +961,7 @@ kubeScheduler:
 ## Component scraping kube proxy
 ##
 kubeProxy:
-  enabled: true
+  enabled: false
 
   ## If your kube proxy is not deployed as a pod, specify IPs it can be found on
   ##
