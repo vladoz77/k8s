@@ -113,8 +113,8 @@ vmsingle:
       tag: v1.91.3
     retentionPeriod: "14"
     replicaCount: 1
-    # extraArgs: 
-    #   http.pathPrefix: /vmsingle
+    extraArgs: 
+      http.pathPrefix: /vmsingle
     storage:
       storageClassName: nfs
       accessModes:
@@ -138,7 +138,7 @@ vmsingle:
     pathType: Prefix
 
     hosts:
-      - vmsingle.home.local
+      - mon.home.local
     ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
     extraPaths: 
     # - path: /vmsingle
@@ -146,13 +146,13 @@ vmsingle:
     #     serviceName: ssl-redirect
     #     servicePort: use-annotation
     ## Or for k8s > 1.19
-    # - path: /vmsingle
-    #   pathType: Prefix
-    #   backend:
-    #     service:
-    #       name: vmsingle-vm-victoria-metrics-k8s-stack
-    #       port:
-    #         name: "8429"
+    - path: /vmsingle
+      pathType: Prefix
+      backend:
+        service:
+          name: vmsingle-vm-victoria-metrics-k8s-stack
+          port:
+            name: "8429"
     tls: []
     #  - secretName: vmsingle-ingress-tls
     #    hosts:
@@ -559,9 +559,9 @@ vmagent:
   annotations: {}
   # https://docs.victoriametrics.com/operator/api.html#vmagentremotewritespec
   # defined spec will be added to the remoteWrite configuration of VMAgent
-  # additionalRemoteWrites:
+  additionalRemoteWrites:
     
-  #   - url: http://vmsingle-vm-victoria-metrics-k8s-stack:8429/api/v1/write/vmsingle
+    - url: http://vmsingle-vm-victoria-metrics-k8s-stack:8429/api/v1/write/vmsingle
   # spec for VMAgent crd
   # https://docs.victoriametrics.com/operator/api.html#vmagentspec
   spec:
@@ -573,7 +573,7 @@ vmagent:
       cluster: cluster-name
     extraArgs:
       promscrape.streamParse: "true"
-      # http.pathPrefix: /vmagent
+      http.pathPrefix: /vmagent
   ingress:
     enabled: true
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
@@ -590,21 +590,21 @@ vmagent:
     pathType: Prefix
 
     hosts:
-      - vmagent.home.local
+      - mon.home.local
     ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-    # extraPaths: 
+    extraPaths: 
     # - path: /*
     #   backend:
     #     serviceName: ssl-redirect
     #     servicePort: use-annotation
     ## Or for k8s > 1.19
-    # - path: /vmagent
-    #   pathType: Prefix
-    #   backend:
-    #     service:
-    #       name: vmagent-vm-victoria-metrics-k8s-stack
-    #       port:
-    #         name: "8429"
+    - path: /vmagent
+      pathType: Prefix
+      backend:
+        service:
+          name: vmagent-vm-victoria-metrics-k8s-stack
+          port:
+            name: "8429"
     tls: []
     #  - secretName: vmagent-ingress-tls
     #    hosts:
@@ -961,7 +961,6 @@ kubeScheduler:
         scheme: https
         tlsConfig:
           caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-          insecureSkipVerify: true
 
 ## Component scraping kube proxy
 ##
