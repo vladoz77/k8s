@@ -9,7 +9,7 @@ spec:
   retentionPeriod: "1"
   removePvcAfterDelete: true
   storage:
-    storageClassName: nfs
+    storageClassName: nfs-client
     accessModes:
     - ReadWriteOnce
     resources:
