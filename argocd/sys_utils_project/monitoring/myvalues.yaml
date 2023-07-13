@@ -34,7 +34,7 @@ serviceAccount:
 
 ## -- Create default rules for monitoring the cluster
 defaultRules:
-  create: true
+  create: false
   rules:
     etcd: true
     general: true
