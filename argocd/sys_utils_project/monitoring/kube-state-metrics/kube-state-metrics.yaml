@@ -81,11 +81,25 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
 spec:
   endpoints:
+<<<<<<< HEAD
   - port: http-metrics
     honorLabels: true
     metricRelabelConfigs:
     - action: labeldrop
       regex: (uid|container_id|image_id)
+=======
+    - honorLabels: true
+      interval: 30s
+      # metricRelabelConfigs:
+      #   - action: drop
+      #     regex: kube_endpoint_address_not_ready|kube_endpoint_address_available
+      #     sourceLabels:
+      #       - __name__
+      port: http-metrics
+      relabelConfigs:
+        - action: labeldrop
+          regex: (pod|service|endpoint|namespace)
+>>>>>>> 11e7fc6900e944903a672571653fccecf4af2a62
   jobLabel: jobLabel
   namespaceSelector:
     matchNames:
