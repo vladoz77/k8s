@@ -9,7 +9,7 @@ spec:
   selector:
     app.kubernetes.io/name: ingress-nginx
   ports:
-  - port: 10250
+  - port: 10254
     name: metrics
 
 ---
