@@ -81,7 +81,6 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
 spec:
   endpoints:
-<<<<<<< HEAD
   - port: http-metrics
     honorLabels: true
     metricRelabelConfigs:
