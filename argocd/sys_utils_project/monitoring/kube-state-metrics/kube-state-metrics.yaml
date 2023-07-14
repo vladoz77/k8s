@@ -83,9 +83,9 @@ spec:
   endpoints:
   - honorLabels: true
     interval: 30s
-    metricRelabelConfigs:
-    - action: labeldrop
-      regex: (uid|container_id|image_id)
+    # metricRelabelConfigs:
+    # - action: labeldrop
+    #   regex: (uid|container_id|image_id)
     port: http-metrics
     # relabelConfigs:
     # - action: labeldrop
