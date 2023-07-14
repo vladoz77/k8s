@@ -76,12 +76,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grafana-service
+  namespace: monitoring
   labels:
     app.kubernetes.io/name: grafana-service
     jobLabel: grafana
 spec:
   ports:
-  - port: 3000
+  - name: http-grafana
+    port: 3000
     protocol: TCP
     targetPort: http-grafana
   selector:
@@ -101,3 +103,6 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: grafana-service
+  namespaceSelector:
+    matchNames:
+    - monitoring

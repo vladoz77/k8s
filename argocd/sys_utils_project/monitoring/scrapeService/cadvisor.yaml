@@ -12,14 +12,21 @@ spec:
     insecureSkipVerify: true
     caFile: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
   bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  metricRelabelConfigs:
+  - action: labeldrop
+    regex: (uid)
+  - action: labeldrop
+    regex: (id|name)
+  - action: drop
+    regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+    source_labels:
+    - __name__
+  path: /metrics/cadvisor
   relabelConfigs:
-    - action: labelmap
-      regex: __meta_kubernetes_node_label_(.+)
-    - targetLabel: __address__
-      replacement: kubernetes.default.svc:443
-    - sourceLabels: [__meta_kubernetes_node_name]
-      regex: (.+)
-      targetLabel: __metrics_path__
-      replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor
-    - targetLabel: "job"
-      replacement: "cadvisor"
+  - action: labelmap
+    regex: __meta_kubernetes_node_label_(.+)
+  - sourceLabels:
+    - __metrics_path__
+    targetLabel: metrics_path
+  - replacement: kubelet
+    targetLabel: job
