@@ -316,7 +316,7 @@ vmcluster:
       #      - vminsert.domain.com
 
 alertmanager:
-  enabled: false
+  enabled: true
   annotations: {}
   # spec for VMAlertmanager crd
   # https://docs.victoriametrics.com/operator/api.html#vmalertmanagerspec
@@ -484,7 +484,7 @@ alertmanager:
 
 vmalert:
   annotations: {}
-  enabled: false
+  enabled: true
 
   # Controls whether VMAlert should use VMAgent or VMInsert as a target for remotewrite
   remoteWriteVMAgent: false
@@ -561,7 +561,7 @@ vmagent:
     extraArgs:
       promscrape.streamParse: "true"
   ingress:
-    enabled: false
+    enabled: true
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
     # ingressClassName: nginx
