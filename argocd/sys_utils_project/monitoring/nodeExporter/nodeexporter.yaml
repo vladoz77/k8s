@@ -119,10 +119,10 @@ spec:
     #   sourceLabels:
     #   - __meta_kubernetes_pod_node_name
     #   targetLabel: instance
-    #   metricRelabelConfigs:
-    #   - action: drop
-    #     regex: /var/lib/kubelet/pods.+
-    #     source_labels:
+    # metricRelabelConfigs:
+    #  - action: drop
+    #    regex: /var/lib/kubelet/pods.+
+    #    source_labels:
     #     - mountpoint
   jobLabel: jobLabel
   selector:
