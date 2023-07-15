@@ -1,5 +1,5 @@
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: vm
+fullnameOverride: vm
 tenant: "0"
 # -- If this chart is used in "Argocd" with "releaseName" field then
 # -- VMServiceScrapes couldn't select the proper services.
@@ -34,7 +34,7 @@ serviceAccount:
 
 ## -- Create default rules for monitoring the cluster
 defaultRules:
-  create: false
+  create: true
   rules:
     etcd: true
     general: true
@@ -115,7 +115,7 @@ vmsingle:
     replicaCount: 1
     extraArgs: {}
     storage:
-      storageClassName: standard
+      storageClassName: nfs
       accessModes:
       - ReadWriteOnce
       resources:
@@ -156,164 +156,7 @@ vmsingle:
     #    hosts:
     #      - vmsingle.domain.com
 
-vmcluster:
-  enabled: false
-  annotations: {}
-  # spec for VMCluster crd
-  # https://docs.victoriametrics.com/operator/api.html#vmclusterspec
-  spec:
-    retentionPeriod: "14"
-    replicationFactor: 2
-    vmstorage:
-      image:
-        tag: v1.91.3-cluster
-      replicaCount: 2
-      storageDataPath: "/vm-data"
-      storage:
-        volumeClaimTemplate:
-          spec:
-            resources:
-              requests:
-                storage: 10Gi
-      resources: {}
-      # limits:
-      #   cpu: "1"
-      #   memory: 1500Mi
-    vmselect:
-      image:
-        tag: v1.91.3-cluster
-      replicaCount: 2
-      cacheMountPath: "/select-cache"
-      extraArgs: {}
-      storage:
-        volumeClaimTemplate:
-          spec:
-            resources:
-              requests:
-                storage: 2Gi
-      resources: {}
-      # limits:
-      #   cpu: "1"
-      #   memory: "1000Mi"
-      # requests:
-      #   cpu: "0.5"
-      #   memory: "500Mi"
-    vminsert:
-      image:
-        tag: v1.91.3-cluster
-      replicaCount: 2
-      extraArgs: {}
-      resources: {}
-      # limits:
-      #   cpu: "1"
-      #   memory: 1000Mi
-      # requests:
-      #   cpu: "0.5"
-      #   memory: "500Mi"
 
-  ingress:
-    storage:
-      enabled: false
-      # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-      # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
-      # Values can be templated
-      annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      labels: {}
-      path: /
-      # pathType is only for k8s > 1.19
-      pathType: Prefix
-
-      hosts:
-      - vmstorage.domain.com
-      ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-      extraPaths: []
-      # - path: /*
-      #   backend:
-      #     serviceName: ssl-redirect
-      #     servicePort: use-annotation
-      ## Or for k8s > 1.19
-      # - path: /*
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: ssl-redirect
-      #       port:
-      #         name: service
-      tls: []
-      #  - secretName: vmstorage-ingress-tls
-      #    hosts:
-      #      - vmstorage.domain.com
-    select:
-      enabled: false
-      # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-      # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
-      # Values can be templated
-      annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      labels: {}
-      path: /
-      # pathType is only for k8s > 1.19
-      pathType: Prefix
-
-      hosts:
-      - vmselect.domain.com
-      ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-      extraPaths: []
-      # - path: /*
-      #   backend:
-      #     serviceName: ssl-redirect
-      #     servicePort: use-annotation
-      ## Or for k8s > 1.19
-      # - path: /*
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: ssl-redirect
-      #       port:
-      #         name: service
-      tls: []
-      #  - secretName: vmselect-ingress-tls
-      #    hosts:
-      #      - vmselect.domain.com
-    insert:
-      enabled: false
-      # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-      # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
-      # Values can be templated
-      annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      labels: {}
-      path: /
-      # pathType is only for k8s > 1.19
-      pathType: Prefix
-
-      hosts:
-      - vminsert.domain.com
-      ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
-      extraPaths: []
-      # - path: /*
-      #   backend:
-      #     serviceName: ssl-redirect
-      #     servicePort: use-annotation
-      ## Or for k8s > 1.19
-      # - path: /*
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: ssl-redirect
-      #       port:
-      #         name: service
-      tls: []
-      #  - secretName: vminsert-ingress-tls
-      #    hosts:
-      #      - vminsert.domain.com
 
 alertmanager:
   enabled: true
@@ -508,7 +351,7 @@ vmalert:
   # template_2.tmpl: ""
 
   ingress:
-    enabled: false
+    enabled: true
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
     # ingressClassName: nginx
@@ -616,12 +459,13 @@ grafana:
       enabled: true
       multicluster: false
 
-    persistence:
-      enabled: true
-      type: pvc
-      storageClassName: standard
-      accessModes: ReadWriteOnce
-      size: 10Gi
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: nfs
+    accessModes: 
+      - ReadWriteOnce
+    size: 10Gi
 
 
 
@@ -670,7 +514,7 @@ grafana:
   defaultDashboardsTimezone: utc
 
   ingress:
-    enabled: false
+    enabled: true
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
     # ingressClassName: nginx

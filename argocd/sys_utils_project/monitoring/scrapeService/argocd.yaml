@@ -13,9 +13,9 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: argocd-metrics
-    namespaceSelector:
+  namespaceSelector:
     matchNames:
-    - argocd
+      - argocd
 
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
@@ -32,7 +32,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: argocd-server-metrics
-    namespaceSelector:
+  namespaceSelector:
     matchNames:
     - argocd
 
