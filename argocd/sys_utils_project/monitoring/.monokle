@@ -11,9 +11,15 @@
         "*.yml"
     ],
     "folderReadsMaxDepth": 10,
+<<<<<<< HEAD
     "k8sVersion": "1.27.0",
     "settings": {
         "helmPreviewMode": "install",
+=======
+    "k8sVersion": "1.26.3",
+    "settings": {
+        "helmPreviewMode": "template",
+>>>>>>> 6912af150b5d5daabd6c88f4b06f3ae16a7cb775
         "kustomizeCommand": "kubectl",
         "enableHelmWithKustomize": true,
         "createDefaultObjects": false,
@@ -21,7 +27,12 @@
         "allowEditInClusterMode": true
     },
     "kubeConfig": {
+<<<<<<< HEAD
         "path": "C:\\Users\\vladi\\.kube\\config",
         "currentContext": "kubernetes-admin@kubernetes"
+=======
+        "path": "/home/vlad/.kube/config",
+        "currentContext": "minikube"
+>>>>>>> 6912af150b5d5daabd6c88f4b06f3ae16a7cb775
     }
 }
