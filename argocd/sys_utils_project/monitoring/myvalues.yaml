@@ -691,6 +691,7 @@ kubeControllerManager:
       tlsConfig:
         caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         serverName: kubernetes
+        insecureSkipVerify: true
 
 # -Component scraping kubeDns. Use either this or coreDns
 kubeDns:
@@ -798,6 +799,7 @@ kubeScheduler:
       scheme: https
       tlsConfig:
         caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecureSkipVerify: true
 
 ## Component scraping kube proxy
 ##
