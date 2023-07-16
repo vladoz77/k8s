@@ -1,0 +1,18 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  labels:
+    app.kubernetes.io/name: calico
+  name: calico
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: metrics-port
+  selector:
+    matchExpressions:
+      - key: k8s-app
+        operator: In
+        values: ["calico-kube-controllers", "calico-typha", "calico-felix" ]
+  namespaceSelector:
+    matchNames:
+    - calico-system
