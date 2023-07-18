@@ -3,18 +3,22 @@ kind: Application
 metadata:
   name: node-exporter-app
   namespace: monitoring
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: sys-utils
+  destination:
+    name: ''
+    namespace: monitoring
+    server: 'https://kubernetes.default.svc'
   source:
-    repoURL: 'https://github.com/vladoz77/k8s.git'
     path: argocd/sys_utils_project/monitoring/operator
+    repoURL: 'https://github.com/vladoz77/k8s.git'
     targetRevision: HEAD
     directory:
       recurse: true
       jsonnet: {}
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: monitoring
+  sources: []
+  project: sys-utils
   syncPolicy:
     syncOptions:
       - PruneLast=true
