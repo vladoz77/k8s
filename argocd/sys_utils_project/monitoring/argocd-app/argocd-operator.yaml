@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-exporter-app
+  namespace: monitoring
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: ''
+    namespace: monitoring
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: argocd/sys_utils_project/monitoring/operator
+    repoURL: 'https://github.com/vladoz77/k8s.git'
+    targetRevision: HEAD
+    directory:
+      recurse: true
+      jsonnet: {}
+  sources: []
+  project: sys-utils
+  syncPolicy:
+    syncOptions:
+      - PruneLast=true
+      - CreateNamespace=true

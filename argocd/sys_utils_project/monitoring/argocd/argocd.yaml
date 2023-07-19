@@ -18,6 +18,7 @@ spec:
           - argocd-metrics
           - argocd-server-metrics
           - argocd-repo-server
+          - argocd-applicationset-controller
   namespaceSelector:
     matchNames:
       - argocd
