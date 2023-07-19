@@ -2,7 +2,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: crape-conf-app
-  namespace: monitoring
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: sys-utils
   source:
@@ -17,5 +19,5 @@ spec:
     namespace: monitoring
   syncPolicy:
     syncOptions:
-      - PruneLast=true
-      - CreateNamespace=true
+    - PruneLast=true
+    - CreateNamespace=true

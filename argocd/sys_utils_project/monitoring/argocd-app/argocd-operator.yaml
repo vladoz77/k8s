@@ -2,9 +2,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: node-exporter-app
-  namespace: monitoring
+  namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     name: ''
@@ -21,5 +21,5 @@ spec:
   project: sys-utils
   syncPolicy:
     syncOptions:
-      - PruneLast=true
-      - CreateNamespace=true
+    - PruneLast=true
+    - CreateNamespace=true
