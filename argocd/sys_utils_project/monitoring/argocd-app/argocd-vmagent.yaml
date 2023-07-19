@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: sys-utils
+  project: monitoring
   source:
     repoURL: 'https://github.com/vladoz77/k8s.git'
     path: argocd/sys_utils_project/monitoring/vmagent

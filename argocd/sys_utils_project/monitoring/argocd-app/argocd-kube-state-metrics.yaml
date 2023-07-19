@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: node-exporter-app
+  name: kube-state-metrics
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: sys-utils
+  project: monitoring
   source:
     repoURL: 'https://github.com/vladoz77/k8s.git'
     path: argocd/sys_utils_project/monitoring/kube-state-metrics

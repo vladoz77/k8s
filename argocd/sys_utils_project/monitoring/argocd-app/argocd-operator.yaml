@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: node-exporter-app
+  name: operator
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -18,7 +18,7 @@ spec:
       recurse: true
       jsonnet: {}
   sources: []
-  project: sys-utils
+  project: monitoring
   syncPolicy:
     syncOptions:
     - PruneLast=true
