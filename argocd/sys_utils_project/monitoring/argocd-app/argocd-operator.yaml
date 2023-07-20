@@ -18,6 +18,7 @@ spec:
   sources: []
   project: monitoring
   syncPolicy:
+    automated: {}
     syncOptions:
     - PruneLast=true
     - CreateNamespace=true
