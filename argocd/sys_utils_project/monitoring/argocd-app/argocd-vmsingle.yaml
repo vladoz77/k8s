@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: vmsingle-app
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: monitoring
   source:
