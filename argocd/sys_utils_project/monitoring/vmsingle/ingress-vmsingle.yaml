@@ -14,5 +14,5 @@ spec:
               service:
                 name: vmsingle-vmsingle
                 port:
-                  number: 3000
+                  number: 8429
         
