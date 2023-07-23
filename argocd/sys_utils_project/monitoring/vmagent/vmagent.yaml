@@ -18,4 +18,4 @@ spec:
     memory.allowedPercent: "40"
     loggerFormat: json
   remoteWrite:
-  - url: "http://vmsingle-vmsingle.monitoring.svc:8429/api/v1/write"
+  - url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm/api/v1/write"
