@@ -7,7 +7,7 @@ spec:
   # Add fields here
   replicaCount: 1
   datasource:
-    url: "http://vmsingle-vmsingle.monitoring.svc:8429"
+    url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm"
   notifier:
     url: "http://vmalertmanager-alertmanager.monitoring.svc:9093"
   evaluationInterval: "30s"
