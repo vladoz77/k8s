@@ -28,7 +28,7 @@ metadata:
   name: alertmanager
   namespace: monitoring
 spec:
-  replicaCount: 1
+  replicaCount: 2
   configSecret: vmalertmanager-config
   selectAllByDefault: true
 
