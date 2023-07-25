@@ -5,11 +5,11 @@ metadata:
   namespace: monitoring
 spec:
   extraArgs:
-  # http.pathPrefix: /vm
+    http.pathPrefix: /vm
   retentionPeriod: "1"
   removePvcAfterDelete: true
   storage:
-    storageClassName: standard
+    storageClassName: nfs
     accessModes:
     - ReadWriteOnce
     resources:

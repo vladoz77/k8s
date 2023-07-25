@@ -11,10 +11,10 @@ data:
             {
                "access":"proxy",
                 "editable": true,
-                "name": "prometheus",
+                "name": "victoria-metrics",
                 "orgId": 1,
                 "type": "prometheus",
-                "url": "http://vmsingle-vmsingle.monitoring.svc.cluster.local:8429",
+                "url": "http://vmsingle-vmsingle.monitoring.svc.cluster.local:8429/vm",
                 "version": 1
             }
         ]

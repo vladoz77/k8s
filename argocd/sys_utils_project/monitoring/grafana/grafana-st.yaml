@@ -56,6 +56,10 @@ spec:
           name: grafana-pv
         - mountPath: /etc/grafana/provisioning/datasources
           name: grafana-datasourse
+        - mountPath: /etc/grafana/grafana.ini
+          name: grafana-ini-pv
+          subPath: grafana.ini
+          
       
       volumes:
       - name: grafana-pv
@@ -65,6 +69,11 @@ spec:
       - name: grafana-datasourse
         configMap:
           name: grafana-datasourse-cfg
+      
+      - name: grafana-ini-pv
+        configMap:
+          name: grafana-ini-cfg
+       
 ---
 apiVersion: v1
 kind: Service
