@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-statefull
+spec:
+  clusterIP: None
+  selector:
+    app: nginx-set
+  ports:
+  - port: 80
+    targetPort: web

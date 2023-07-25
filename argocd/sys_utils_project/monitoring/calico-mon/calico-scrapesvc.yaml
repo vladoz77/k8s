@@ -10,9 +10,13 @@ spec:
   - port: metrics-port
   selector:
     matchExpressions:
-      - key: k8s-app
-        operator: In
-        values: ["calico-kube-controllers", "calico-typha", "calico-felix" ]
+    - key: k8s-app
+      operator: In
+      values:
+      - calico-kube-controllers
+      - calico-typha
+      - calico-felix
+
   namespaceSelector:
     matchNames:
     - calico-system
