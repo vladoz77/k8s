@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  namespace: monitoring
+spec:
+  rules:
+  - host: "mon.home.local"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /grafana
+        backend:
+          service:
+            name: grafana-service
+            port:
+              number: 3000
+      - pathType: Prefix
+        path: /vmagent
+        backend:
+          service:
+            name: vmagent-vmagent
+            port:
+              number: 8429
+      - pathType: Prefix
+        path: /vm
+        backend:
+          service:
+            name: vmsingle-vmsingle
+            port:
+              number: 8429
+
