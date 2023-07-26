@@ -29,7 +29,7 @@ metadata:
   namespace: monitoring
 spec:
   extraArgs:
-    web.route-prefix: /
+    web.route-prefix: /vmalertmanager
     web.external-url: "http://mon.home.local/vmalertmanager/"
   replicaCount: 2
   configSecret: vmalertmanager-config
