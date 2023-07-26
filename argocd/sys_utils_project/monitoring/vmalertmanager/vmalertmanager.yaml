@@ -29,7 +29,6 @@ metadata:
   namespace: monitoring
 spec:
   extraArgs:
-    web.listen-address: "127.0.0.1:9093"
     web.route-prefix: /
     web.external-url: "http://mon.home.local/vmalertmanager/"
   replicaCount: 2
