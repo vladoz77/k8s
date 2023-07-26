@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: vmalertmanager
   namespace: argocd
 spec:
   project: monitoring
   source:
     repoURL: 'https://github.com/vladoz77/k8s.git'
-    path: argocd/sys_utils_project/monitoring/grafana
+    path: argocd/sys_utils_project/monitoring/vmalertmanager
     targetRevision: HEAD
     directory:
       recurse: true
