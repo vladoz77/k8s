@@ -30,7 +30,6 @@ metadata:
 spec:
   extraArgs:
     web.route-prefix: /vmalertmanager
-    web.external-url: "http://mon.home.local/vmalertmanager/"
   replicaCount: 2
   configSecret: vmalertmanager-config
   selectAllByDefault: true
