@@ -18,8 +18,8 @@ spec:
       labels:
         severity: critical
       annotations:
-        summary: Kubernetes node not ready (instance {{ $labels.instance }})
-        description: "Node {{ $labels.node }} has been unready for a long time\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        summary: Kubernetes node not ready (instance {{ $labels.node }})
+        description: "Node {{ $labels.node }} has been unready for a long time\n"
 
     - alert: KubernetesMemoryPressure
       expr: 'kube_node_status_condition{condition="MemoryPressure",status="true"} == 1'
@@ -171,8 +171,8 @@ spec:
       labels:
         severity: critical
       annotations:
-        summary: Kubernetes Pod not healthy (instance {{ $labels.instance }})
-        description: "Pod has been in a non-ready state for longer than 15 minutes.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        summary: Kubernetes Pod  {{ $labels.pod }} in namespace {{$labels.namespace}} not healthy
+        description: "Pod has been in a non-ready state for longer than 15 minutes."
 
     - alert: KubernetesPodCrashLooping
       expr: 'rate(kube_pod_container_status_restarts_total[5m]) * 60 * 5 > 0'
