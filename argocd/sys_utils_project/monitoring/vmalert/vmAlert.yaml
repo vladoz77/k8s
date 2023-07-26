@@ -4,7 +4,8 @@ metadata:
   name: vmalert
   namespace: monitoring
 spec:
-  # Add fields here
+  extraArgs:
+    http.pathPrefix: /vmalert
   replicaCount: 1
   datasource:
     url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm"

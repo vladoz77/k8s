@@ -29,4 +29,19 @@ spec:
             name: vmsingle-vmsingle
             port:
               number: 8429
+      - pathType: Prefix
+        path: /vmalert
+        backend:
+          service:
+            name: vmalert-vmalert
+            port:
+              number: 8080
+      - pathType: Prefix
+        path: /vmalertmanager
+        backend:
+          service:
+            name: vmalertmanager-alertmanage
+            port:
+              number: 9093
+      
 

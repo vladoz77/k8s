@@ -28,6 +28,8 @@ metadata:
   name: alertmanager
   namespace: monitoring
 spec:
+  extraArgs:
+    http.pathPrefix: /vmalertmanager
   replicaCount: 2
   configSecret: vmalertmanager-config
   selectAllByDefault: true
