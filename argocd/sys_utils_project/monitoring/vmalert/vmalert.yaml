@@ -13,7 +13,3 @@ spec:
     url: "http://alertmanager-service.monitoring.svc:9093"
   evaluationInterval: "30s"
   selectAllByDefault: true
-  serviceSpec:
-    metadata:
-      name: vmalert-service
-    spec: {}

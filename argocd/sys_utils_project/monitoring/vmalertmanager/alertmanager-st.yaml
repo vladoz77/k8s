@@ -67,7 +67,7 @@ spec:
       name: alertmanager-storage
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: standard
+      storageClassName: nfs
       resources:
         requests:
           storage: 1Gi
