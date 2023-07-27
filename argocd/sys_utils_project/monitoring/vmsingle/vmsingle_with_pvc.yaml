@@ -8,6 +8,13 @@ spec:
     http.pathPrefix: /vm
   retentionPeriod: "1"
   removePvcAfterDelete: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 250Mi
   storage:
     storageClassName: nfs
     accessModes:
