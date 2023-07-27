@@ -9,12 +9,12 @@ spec:
   retentionPeriod: "1"
   removePvcAfterDelete: true
   resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 200m
-      memory: 250Mi
+      requests:
+        cpu: 200m
+        memory: 500Mi
+      limits:
+        cpu: "1"
+        memory: 2Gi
   storage:
     storageClassName: nfs
     accessModes:
