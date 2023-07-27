@@ -33,4 +33,21 @@ spec:
   replicaCount: 2
   configSecret: vmalertmanager-config
   selectAllByDefault: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500M
+    limits:
+      cpu: 1
+      memory: 1Gi
+  storage:
+    volumeClaimTemplate:
+      metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 2Gi
 

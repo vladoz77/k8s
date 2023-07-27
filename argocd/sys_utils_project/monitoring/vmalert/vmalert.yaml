@@ -8,8 +8,12 @@ spec:
     http.pathPrefix: /vmalert
   replicaCount: 1
   datasource:
-    url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm"
+    url: "http://vmsingle-service.monitoring.svc:8429/vm"
   notifier:
-    url: "http://vmalertmanager-alertmanager.monitoring.svc:9093"
+    url: "http://alertmanager-service.monitoring.svc:9093"
   evaluationInterval: "30s"
   selectAllByDefault: true
+  serviceSpec:
+    metadata:
+      name: vmalert-service
+    spec: {}

@@ -19,4 +19,8 @@ spec:
     loggerFormat: json
     http.pathPrefix: /vmagent
   remoteWrite:
-  - url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm/api/v1/write"
+  - url: "http://vmsingle-service.monitoring.svc:8429/vm/api/v1/write"
+  serviceSpec:
+    metadata:
+      name: vmagent-service
+    spec: {}
