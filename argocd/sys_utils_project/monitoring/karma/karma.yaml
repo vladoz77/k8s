@@ -27,7 +27,7 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
-          name: karma
+          name: http-karma
         volumeMounts:
         - name: karma-vm
           mountPath: /etc/karma/
@@ -43,11 +43,13 @@ kind: Service
 metadata:
   name: karma-service
   namespace: monitoring
+  labels:
+    app.kubernetes.io/name: karma-service
 spec:
   selector:
     app: karma
   ports:
   - port: 8080
-    name: karma
+    name: http-karma
 
 
