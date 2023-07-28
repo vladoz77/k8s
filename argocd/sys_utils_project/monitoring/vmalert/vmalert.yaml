@@ -7,9 +7,17 @@ spec:
   extraArgs:
     http.pathPrefix: /vmalert
   replicaCount: 1
+  logFormat: json
   datasource:
     url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm"
   notifier:
     url: "http://alertmanager-service.monitoring.svc:9093"
   evaluationInterval: "30s"
   selectAllByDefault: true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi

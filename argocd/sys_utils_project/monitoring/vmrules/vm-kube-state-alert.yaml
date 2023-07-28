@@ -175,8 +175,8 @@ spec:
         description: "Pod has been in a non-ready state for longer than 15 minutes."
 
     - alert: KubernetesPodCrashLooping
-      expr: 'rate(kube_pod_container_status_restarts_total[5m]) * 60 * 5 > 0'
-      for: 10m
+      expr: 'rate(kube_pod_container_status_restarts_total{job="kube-state-metrics",namespace=~".*"}[5m]) * 60 * 5 > 0'
+      for: 5m
       labels:
         severity: warning
       annotations:
