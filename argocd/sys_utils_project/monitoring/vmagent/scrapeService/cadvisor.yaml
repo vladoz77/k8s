@@ -2,7 +2,7 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMNodeScrape
 metadata:
   name: cadvisor
-  namespace: monitoring-system
+  namespace: monitoring
 spec:
   scheme: "https"
   interval: "30s"
