@@ -60,7 +60,7 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-  - host: "mon.home.local"
+  - host: "karma.home.local"
     http:
       paths:
       - pathType: Prefix
