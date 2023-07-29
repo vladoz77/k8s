@@ -52,4 +52,21 @@ spec:
   - port: 8080
     name: http-karma
 
-
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: karma-ingress
+  namespace: monitoring
+spec:
+  rules:
+  - host: "mon.home.local"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: karma-service
+            port:
+              number: 8080
