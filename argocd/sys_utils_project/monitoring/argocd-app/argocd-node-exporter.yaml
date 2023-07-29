@@ -7,7 +7,7 @@ spec:
   project: monitoring
   source:
     repoURL: 'https://github.com/vladoz77/k8s.git'
-    path: argocd/sys_utils_project/monitoring/nodeExporter
+    path: argocd/sys_utils_project/monitoring/nodeexporter
     targetRevision: HEAD
     directory:
       recurse: true
