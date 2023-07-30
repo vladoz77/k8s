@@ -4,6 +4,8 @@ metadata:
   name: vmalert
   namespace: monitoring
 spec:
+  image:
+    tag: v1.91.3
   extraArgs:
     http.pathPrefix: /vmalert
   replicaCount: 1
