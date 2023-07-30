@@ -7,16 +7,15 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
 spec:
   endpoints:
-  - honorLabels: true
-    interval: 30s
-    metricRelabelConfigs:
-    - action: labeldrop
-      regex: (uid|container_id|image_id)
+  - bearerTokenSecret:
+      key: ""
+    honorLabels: true
     port: http-metrics
-  jobLabel: jobLabel
+  jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
-    - monitoring
+      - monitoring
   selector:
     matchLabels:
+      app.kubernetes.io/instance: kube-state-metrics
       app.kubernetes.io/name: kube-state-metrics
