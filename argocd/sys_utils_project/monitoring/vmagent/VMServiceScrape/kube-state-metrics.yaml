@@ -12,6 +12,7 @@ spec:
     honorLabels: true
     port: http-metrics
   jobLabel: app.kubernetes.io/name
+  
   namespaceSelector:
     matchNames:
       - monitoring

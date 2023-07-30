@@ -11,6 +11,13 @@ spec:
   scrapeInterval: 25s
   logFormat: json
   replicaCount: 1
+  resources:
+    limits:
+      cpu: 200m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 200Mi
   extraArgs:
     memory.allowedPercent: "40"
     loggerFormat: json

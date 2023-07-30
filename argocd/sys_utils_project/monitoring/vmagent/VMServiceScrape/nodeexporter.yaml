@@ -14,6 +14,10 @@ spec:
        regex: /var/lib/kubelet/pods.+
        source_labels:
         - mountpoint
+    relabelConfigs:
+      - action: replace
+        sourceLabels: [__meta_kubernetes_pod_node_name]
+        targetLabel: nodename
   jobLabel: jobLabel
   selector:
     matchLabels:
