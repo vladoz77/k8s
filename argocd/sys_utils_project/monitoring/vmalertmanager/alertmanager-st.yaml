@@ -52,13 +52,6 @@ spec:
         ports:
         - containerPort: 9093
           name: web
-        resources:
-          requests:
-            cpu: 50m
-            memory: 200Mi
-          limits:
-            cpu: 100m
-            memory: 500Mi
         volumeMounts:
         - name: alertmanager-storage
           mountPath: /alertmanager

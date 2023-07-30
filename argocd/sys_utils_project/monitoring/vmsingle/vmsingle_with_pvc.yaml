@@ -9,13 +9,6 @@ spec:
   retentionPeriod: "1"
   logFormat: json
   removePvcAfterDelete: true
-  resources:
-    requests:
-      cpu: 100m
-      memory: 500Mi
-    limits:
-      cpu: 200m 
-      memory: 1Gi
   storage:
     storageClassName: nfs
     accessModes:
