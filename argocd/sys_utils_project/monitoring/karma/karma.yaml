@@ -19,9 +19,9 @@ spec:
         - name: CONFIG_FILE
           value: /etc/karma/karma.conf
         resources:
-          limits:
-            memory: "128Mi"
-            cpu: "200m"
+          # limits:
+          #   memory: "128Mi"
+          #   cpu: "200m"
           requests:
             memory: "64Mi"
             cpu: "100m"
