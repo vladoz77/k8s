@@ -8,7 +8,7 @@ spec:
     tag: v1.91.3
   serviceAccountName: vmagent
   selectAllByDefault: true
-  scrapeInterval: 25s
+  scrapeInterval: 30s
   logFormat: json
   replicaCount: 1
   resources:
