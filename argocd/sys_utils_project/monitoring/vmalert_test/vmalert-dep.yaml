@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmalert-dep
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vmalert
+  template:
+    metadata:
+      labels:
+        app: vmalert
+    spec:
+      containers:
+        - name: victoria-metrics-alert-vmalert
+          image: "victoriametrics/vmalert:v1.92.1"
+          args:
+            - -rule=/config/*.yaml
+            - -datasource.url=http://vmsingle-vmsingle.monitoring.svc:8429/vm
+            - -notifier.url=http://alertmanager-service.monitoring.svc:9093
+            - -envflag.enable=true
+            - -envflag.prefix=VM_
+            - -http.pathPrefix=/vmalert
+            - -loggerFormat=json
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8880
+          
+          readinessProbe:
+            httpGet:
+              path: /vmalert/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          
+          livenessProbe:
+            tcpSocket:
+              port: http
+          
+          volumeMounts:
+            - name: alerts-config-alertmanager
+              mountPath: /config/alert-rules-alertmanager.yaml
+              subPath: alert-rules-alertmanager.yaml
+            
+            - name: alerts-config-kube-state
+              mountPath: /config/alert-rules-kube-state.yaml
+              subPath: alert-rules-kube-state.yaml
+
+            - name: alerts-config-node-exporter
+              mountPath: /config/alert-rules-node-exporter.yaml
+              subPath: alert-rules-node-exporter.yaml
+
+            
+          
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              memory: 128Mi
+              cpu: 100m
+        
+      
+      volumes:
+        - name: alerts-config-alertmanager
+          configMap:
+            name: vmalert-alert-rules-config-alertmanager
+        
+        - name: alerts-config-kube-state
+          configMap:
+            name: vmalert-alert-rules-config-kube-state
+
+        - name: alerts-config-node-exporter
+          configMap:
+            name: vmalert-alert-rules-config-node-exporter
+
