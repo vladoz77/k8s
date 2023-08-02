@@ -16,4 +16,11 @@ spec:
     url: "http://alertmanager-service.monitoring.svc:9093"
   evaluationInterval: "30s"
   selectAllByDefault: true
-  
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
