@@ -1,7 +1,7 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
-  name: services
+  name: pod-scrape
   namespace: monitoring
 spec:
   discoveryRole: "endpoints"
