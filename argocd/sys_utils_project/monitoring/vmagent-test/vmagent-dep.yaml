@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmagent
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: victoria-metrics-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: victoria-metrics-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: victoria-metrics-agent
+    spec:
+      serviceAccountName: vmagent
+      containers:
+      - name: victoria-metrics-agent
+        image: "victoriametrics/vmagent:v1.92.1"
+        workingDir: /
+        args:
+        - -promscrape.config=/config/scrape.yml
+        - -remoteWrite.tmpDataPath=/tmpData
+        - -envflag.enable=true
+        - -envflag.prefix=VM_
+        - -http.pathPrefix=/vmagent
+        - -loggerFormat=json
+        - -promscrape.streamParse=true
+        - -remoteWrite.url=http://vmsingle-service.monitoring.svc:8429/vm/api/v1/write
+        imagePullPolicy: IfNotPresent
+
+        ports:
+        - name: http
+          containerPort: 8429
+
+        readinessProbe:
+          httpGet:
+            path: /vmagent/health
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 15
+
+        livenessProbe:
+          tcpSocket:
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 5
+
+        volumeMounts:
+        - name: tmpdata
+          mountPath: /tmpData
+        - name: config
+          mountPath: /config
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      volumes:
+      - name: tmpdata
+        emptyDir: {}
+      - name: config
+        configMap:
+          name: vmagent-config
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vmagent
+  namespace: monitoring
+spec:
+  rules:
+  - host: mon.home.local
+    http:
+      paths:
+      - path: /vmagent
+        pathType: Prefix
+        backend:
+          service:
+            name: vmagent-service
+            port:
+              number: 8429
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmagent-service
+  namespace: monitoring
+spec:
+  ports:
+  - name: http
+    port: 8429
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: victoria-metrics-agent
+
