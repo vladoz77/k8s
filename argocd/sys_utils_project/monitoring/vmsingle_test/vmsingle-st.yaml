@@ -21,6 +21,8 @@ kind: Service
 metadata:
   namespace: monitoring
   name: vmsingle-service
+  labels:
+    app.kubernetes.io/name: vmsingle
 spec:
   ports:
   - name: http
@@ -130,3 +132,21 @@ spec:
             name: vmsingle-service-headless
             port:
               number: 8429
+
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: vmsingle
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: http
+    path: /vm/metrics
+    interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vmsingle
+  namespaceSelector:
+    matchNames:
+    - monitoring
