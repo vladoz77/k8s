@@ -3,14 +3,31 @@ kind: Service
 metadata:
   namespace: monitoring
   labels:
-    app: vmalert
+    app.kubernetes.io/name: vmalert
   name: vmalert-service
 spec:
   ports:
-    - name: http
-      port: 8880
-      targetPort: http
-      protocol: TCP
+  - name: http
+    port: 8880
+    targetPort: http
+    protocol: TCP
   selector:
     app: vmalert
-  type: "ClusterIP"
+
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: vmalert
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: http
+    path: /vmalert/metrics
+    interval: 30s
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vmalert
+  namespaceSelector:
+    matchNames:
+    - monitoring
