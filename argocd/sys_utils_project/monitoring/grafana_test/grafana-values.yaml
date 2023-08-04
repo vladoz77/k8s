@@ -354,7 +354,7 @@ initChownData:
   ## If false, data ownership will not be reset at startup
   ## This allows the grafana-server to be run with an arbitrary user
   ##
-  enabled: true
+  enabled: false
 
   ## initChownData container image
   ##
@@ -556,105 +556,7 @@ datasources:
       url: http://vmsingle-vmsingle.monitoring.svc.cluster.local:8429/vm
       access: proxy
       isDefault: true
-#    - name: CloudWatch
-#      type: cloudwatch
-#      access: proxy
-#      uid: cloudwatch
-#      editable: false
-#      jsonData:
-#        authType: default
-#        defaultRegion: us-east-1
-#    deleteDatasources: []
-#    - name: Prometheus
 
-## Configure grafana alerting (can be templated)
-## ref: http://docs.grafana.org/administration/provisioning/#alerting
-##
-alerting: {}
-# rules.yaml:
-#   apiVersion: 1
-#   groups:
-#     - orgId: 1
-#       name: '{{ .Chart.Name }}_my_rule_group'
-#       folder: my_first_folder
-#       interval: 60s
-#       rules:
-#         - uid: my_id_1
-#           title: my_first_rule
-#           condition: A
-#           data:
-#             - refId: A
-#               datasourceUid: '-100'
-#               model:
-#                 conditions:
-#                   - evaluator:
-#                       params:
-#                         - 3
-#                       type: gt
-#                     operator:
-#                       type: and
-#                     query:
-#                       params:
-#                         - A
-#                     reducer:
-#                       type: last
-#                     type: query
-#                 datasource:
-#                   type: __expr__
-#                   uid: '-100'
-#                 expression: 1==0
-#                 intervalMs: 1000
-#                 maxDataPoints: 43200
-#                 refId: A
-#                 type: math
-#           dashboardUid: my_dashboard
-#           panelId: 123
-#           noDataState: Alerting
-#           for: 60s
-#           annotations:
-#             some_key: some_value
-#           labels:
-#             team: sre_team_1
-# contactpoints.yaml:
-#   apiVersion: 1
-#   contactPoints:
-#     - orgId: 1
-#       name: cp_1
-#       receivers:
-#         - uid: first_uid
-#           type: pagerduty
-#           settings:
-#             integrationKey: XXX
-#             severity: critical
-#             class: ping failure
-#             component: Grafana
-#             group: app-stack
-#             summary: |
-#               {{ `{{ include "default.message" . }}` }}
-
-## Configure notifiers
-## ref: http://docs.grafana.org/administration/provisioning/#alert-notification-channels
-##
-notifiers: {}
-#  notifiers.yaml:
-#    notifiers:
-#    - name: email-notifier
-#      type: email
-#      uid: email1
-#      # either:
-#      org_id: 1
-#      # or
-#      org_name: Main Org.
-#      is_default: true
-#      settings:
-#        addresses: an_email_address@example.com
-#    delete_notifiers:
-
-## Configure grafana dashboard providers
-## ref: http://docs.grafana.org/administration/provisioning/#dashboards
-##
-## `path` must be /var/lib/grafana/dashboards/<provider_name>
-##
 dashboardProviders:
   dashboardproviders.yaml:
     apiVersion: 1
@@ -676,17 +578,8 @@ dashboardProviders:
 ##
 dashboards:
 default:
-  #   some-dashboard:
-  #     json: |
-  #       $RAW_JSON
-  #   custom-dashboard:
-  #     file: dashboards/custom-dashboard.json
-  # node-exporter:
-  #   gnetId: 1860
-  #   revision: 31
-  #   datasource: Victoria
   node-exporter:
-    url: https://example.com/repository/test.json
+    url: https://raw.githubusercontent.com/vladoz77/k8s/test/argocd/sys_utils_project/monitoring/grafana_test/dashboard/node-exporter.json
 #     token: ''
 #   local-dashboard-base64:
 #     url: https://example.com/repository/test-b64.json
@@ -719,17 +612,6 @@ dashboardsConfigMaps: {}
 ## ref: http://docs.grafana.org/installation/configuration/
 ##
 grafana.ini:
-  paths:
-    data: /var/lib/grafana/
-    logs: /var/log/grafana
-    plugins: /var/lib/grafana/plugins
-    provisioning: /etc/grafana/provisioning
-  analytics:
-    check_for_updates: true
-  log:
-    mode: console
-  grafana_net:
-    url: https://grafana.net
   server:
     domain: mon.home.local
     protocol: http

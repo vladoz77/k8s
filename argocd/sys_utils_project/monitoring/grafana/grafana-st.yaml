@@ -55,11 +55,23 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/grafana
           name: grafana-pv
-        - mountPath: /etc/grafana/provisioning/datasources
-          name: grafana-datasourse
+
         - mountPath: /etc/grafana/grafana.ini
-          name: grafana-ini-pv
+          name: grafana-cfg-pv
           subPath: grafana.ini
+
+        - mountPath: /etc/grafana/provisioning/datasources/datasources.yaml
+          name: grafana-cfg-pv
+          subPath: datasources.yaml
+
+        - mountPath: /etc/grafana/provisioning/dashboards/dashboardproviders.yaml"
+          name: grafana-cfg-pv
+          subPath: dashboardproviders.yaml
+
+        - mountPath: /var/lib/grafana/dashboards/node-exporter.json
+          name: grafana-dashboard-nodeexporter-pv
+          subPath: node-exporter.json
+
 
 
       volumes:
@@ -67,13 +79,13 @@ spec:
         persistentVolumeClaim:
           claimName: grafana-pvc
 
-      - name: grafana-datasourse
+      - name: grafana-cfg-pv
         configMap:
-          name: grafana-datasourse-cfg
+          name: grafana-cfg
 
-      - name: grafana-ini-pv
+      - name: grafana-dashboard-nodeexporter-pv
         configMap:
-          name: grafana-ini-cfg
+          name: grafana-dashboard-nodeexporter
 
 ---
 apiVersion: v1
