@@ -23,6 +23,10 @@ metadata:
   name: vmsingle-service
   labels:
     app.kubernetes.io/name: vmsingle
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /vm/metrics
+    prometheus.io/port: "8429"
 spec:
   ports:
   - name: http
@@ -133,20 +137,20 @@ spec:
             port:
               number: 8429
 
+# apiVersion: operator.victoriametrics.com/v1beta1
+# kind: VMServiceScrape
+# metadata:
+#   name: vmsingle
+#   namespace: monitoring
+# spec:
+#   endpoints:
+#   - port: http
+#     path: /vm/metrics
+#     interval: 30s
+#   selector:
+#     matchLabels:
+#       app.kubernetes.io/name: vmsingle
+#   namespaceSelector:
+#     matchNames:
+#     - monitoring
 ---
-apiVersion: operator.victoriametrics.com/v1beta1
-kind: VMServiceScrape
-metadata:
-  name: vmsingle
-  namespace: monitoring
-spec:
-  endpoints:
-  - port: http
-    path: /vm/metrics
-    interval: 30s
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: vmsingle
-  namespaceSelector:
-    matchNames:
-    - monitoring
