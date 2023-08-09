@@ -67,9 +67,6 @@ spec:
           subPath: dashboards.yaml
         
         # dashboard config map 
-        - mountPath: /var/lib/grafana/dashboards/node-exporter.json
-          name: grafana-dashboard-node-exporter-pv
-          subPath: node-exporter.json
         - mountPath: /var/lib/grafana/dashboards/k8s-global.json
           name: grafana-dashboard-k8s-global-pv
           subPath: k8s-global.json
@@ -101,9 +98,6 @@ spec:
           name: grafana-cfg
       
       #dashboards volume
-      - name: grafana-dashboard-node-exporter-pv
-        configMap:
-          name: grafana-dashboard-node-exporter
       - name: grafana-dashboard-k8s-global-pv
         configMap:
           name: grafana-dashboard-k8s-global
