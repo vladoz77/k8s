@@ -9,11 +9,11 @@ spec:
   endpoints:
   - interval: 15s
     port: http-metrics
-    metricRelabelConfigs:
-     - action: drop
-       regex: /var/lib/kubelet/pods.+
-       source_labels:
-        - mountpoint
+    # metricRelabelConfigs:
+    #  - action: drop
+    #    regex: /var/lib/kubelet/pods.+
+    #    source_labels:
+    #     - mountpoint
     relabelConfigs:
       - action: replace
         sourceLabels: [__meta_kubernetes_pod_node_name]
