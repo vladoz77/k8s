@@ -8,7 +8,6 @@ spec:
     tag: v1.91.3
   extraArgs:
     http.pathPrefix: /vm
-    vmalert.proxyURL: http://vmalert-vmalert.monitoring.svc:8080
   retentionPeriod: "14"
   logFormat: json
   removePvcAfterDelete: true
