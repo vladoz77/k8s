@@ -79,9 +79,6 @@ spec:
         - mountPath: /var/lib/grafana/dashboards/k8s-nodes.json
           name: grafana-dashboard-k8s-nodes-pv
           subPath: k8s-nodes.json
-        - mountPath: /var/lib/grafana/dashboards/calico.json
-          name: grafana-dashboard-calico-pv
-          subPath: calico.json
         - mountPath: /var/lib/grafana/dashboards/argocd.json
           name: grafana-dashboard-argocd-pv
           subPath: argocd.json
@@ -110,9 +107,6 @@ spec:
       - name: grafana-dashboard-k8s-nodes-pv
         configMap:
           name: grafana-dashboard-k8s-nodes
-      - name: grafana-dashboard-calico-pv
-        configMap:
-          name: grafana-dashboard-calico
       - name: grafana-dashboard-argocd-pv
         configMap:
           name: grafana-dashboard-argocd
