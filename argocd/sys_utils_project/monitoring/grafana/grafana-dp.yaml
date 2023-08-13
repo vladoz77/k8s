@@ -85,6 +85,9 @@ spec:
         - mountPath: /var/lib/grafana/dashboards/nginx-ingress.json
           name: grafana-dashboard-nginx-ingress-pv
           subPath: nginx-ingress.json
+        - mountPath: /var/lib/grafana/dashboards/calico.json
+          name: grafana-dashboard-calico-pv
+          subPath: calico.json
 
       volumes:
       - name: grafana-pv
@@ -113,6 +116,10 @@ spec:
       - name: grafana-dashboard-nginx-ingress-pv
         configMap:
           name: grafana-dashboard-nginx-ingress
+      - name: grafana-dashboard-nginx-calico-pv
+        configMap:
+          name: grafana-dashboard-calico
+      
       
 
       
