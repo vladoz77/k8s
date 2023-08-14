@@ -22,7 +22,7 @@ spec:
         - containerPort: 3000
           name: http-grafana
           protocol: TCP
-        
+
         readinessProbe:
           failureThreshold: 3
           httpGet:
@@ -33,7 +33,7 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           timeoutSeconds: 2
-        
+
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 30
@@ -42,16 +42,16 @@ spec:
           tcpSocket:
             port: 3000
           timeoutSeconds: 1
-        
+
         resources:
           limits:
             memory: "1Gi"
             cpu: "1000m"
-          requests: 
+          requests:
             memory: 500M
             cpu: "500m"
-       
-        
+
+
         volumeMounts:
         # Main config, grafana.ini, datasource.yaml, dashboards.yaml
         - mountPath: /var/lib/grafana
@@ -65,7 +65,7 @@ spec:
         - mountPath: /etc/grafana/provisioning/dashboards/dashboards.yaml
           name: grafana-cfg-pv
           subPath: dashboards.yaml
-        
+
         # dashboard config map 
         - mountPath: /var/lib/grafana/dashboards/k8s-global.json
           name: grafana-dashboard-k8s-global-pv
@@ -96,7 +96,7 @@ spec:
       - name: grafana-cfg-pv
         configMap:
           name: grafana-cfg
-      
+
       #dashboards volume
       - name: grafana-dashboard-k8s-global-pv
         configMap:
@@ -119,13 +119,13 @@ spec:
       - name: grafana-dashboard-calico-pv
         configMap:
           name: grafana-dashboard-calico
-      
-      
 
-      
-      
 
-       
+
+
+
+
+
 ---
 apiVersion: v1
 kind: Service
