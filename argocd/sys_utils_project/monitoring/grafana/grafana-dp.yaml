@@ -116,7 +116,7 @@ spec:
       - name: grafana-dashboard-nginx-ingress-pv
         configMap:
           name: grafana-dashboard-nginx-ingress
-      - name: grafana-dashboard-nginx-calico-pv
+      - name: grafana-dashboard-calico-pv
         configMap:
           name: grafana-dashboard-calico
       
