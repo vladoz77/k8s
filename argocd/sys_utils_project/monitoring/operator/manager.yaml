@@ -13,7 +13,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    control-plane: vm-operator
+    app.kubernetes.io/name: victoria-metrics-operator
   name: vm-operator
   namespace: monitoring
 spec:
@@ -29,12 +29,13 @@ spec:
       containers:
       - args:
         - --enable-leader-election
+        - --zap-log-level=info
         command:
         - manager
         env:
         - name: WATCH_NAMESPACE
           value: ""
-        image: victoriametrics/operator:v0.35.0
+        image: victoriametrics/operator:v0.35.1
         name: manager
         resources:
           limits:
@@ -43,5 +44,13 @@ spec:
           requests:
             cpu: 80m
             memory: 120Mi
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 9443
+              name: webhook
+              protocol: TCP
       serviceAccountName: vm-operator
       terminationGracePeriodSeconds: 10
+
