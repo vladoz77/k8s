@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-        control-plane: vm-operator
+        app.kubernetes.io/name: vm-operator-service
   endpoints:
     - port: http
   namespaceSelector:
