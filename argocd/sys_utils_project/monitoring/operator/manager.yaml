@@ -20,11 +20,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      control-plane: vm-operator
+      app.kubernetes.io/name: victoria-metrics-operator
   template:
     metadata:
       labels:
-        control-plane: vm-operator
+        app.kubernetes.io/name: victoria-metrics-operator
     spec:
       containers:
       - args:
