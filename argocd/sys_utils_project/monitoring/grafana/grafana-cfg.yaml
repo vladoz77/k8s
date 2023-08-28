@@ -27,7 +27,7 @@ data:
       editable: true
       name: loki
       orgId: 1
-      type: prometheus
+      type: loki
       url: http://loki-gateway.loki.svc
       version: 1
 
