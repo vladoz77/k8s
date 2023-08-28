@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vmalert-ingress
+  name: alertmanager-ingress
   namespace: monitoring
 spec:
   rules:
@@ -9,9 +9,9 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: /vmalert
+        path: /alertmanager
         backend:
           service:
-            name: vmalert-vm
+            name: alertmanager-service-headless
             port:
-              number: 8080
+              number: 9093

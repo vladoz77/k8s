@@ -12,6 +12,6 @@ spec:
         path: /vmsingle
         backend:
           service:
-            name: vmsingle-vmsingle
+            name: vmsingle-vm
             port:
               number: 8429

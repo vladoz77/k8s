@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: node-exporter-app
   namespace: argocd
+  labels:
+    app: monitoring
 spec:
   project: monitoring
   source:

@@ -12,6 +12,6 @@ spec:
         path: /vmagent
         backend:
           service:
-            name: vmagent-vmagent
+            name: vmagent-vm
             port:
               number: 8429
