@@ -24,4 +24,4 @@ spec:
     http.pathPrefix: /vmagent
     promscrape.streamParse: "true"
   remoteWrite:
-  - url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm/api/v1/write"
+  - url: "http://vmsingle-vm.monitoring.svc:8429/vm/api/v1/write"

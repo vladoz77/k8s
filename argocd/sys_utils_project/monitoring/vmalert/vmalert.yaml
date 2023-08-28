@@ -11,11 +11,11 @@ spec:
   replicaCount: 1
   logFormat: json
   datasource:
-    url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm"
+    url: "http://vmsingle-vm.monitoring.svc:8429/vm"
   notifier:
     url: "http://alertmanager-service.monitoring.svc:9093"
   remoteWrite:
-    url: "http://vmsingle-vmsingle.monitoring.svc:8429/vm"
+    url: "http://vmsingle-vm.monitoring.svc:8429/vm"
   evaluationInterval: "30s"
   selectAllByDefault: true
   resources:
