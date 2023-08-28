@@ -9,7 +9,7 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: /vmsingle
+        path: /vm
         backend:
           service:
             name: vmsingle-vm
