@@ -18,6 +18,13 @@ spec:
         env:
         - name: CONFIG_FILE
           value: /etc/karma/karma.conf
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
         ports:
         - containerPort: 8080
           name: http-karma
