@@ -17,7 +17,7 @@ spec:
     relabelConfigs:
       - action: replace
         sourceLabels: [__meta_kubernetes_pod_node_name]
-        targetLabel: nodename
+        targetLabel: instance
   jobLabel: jobLabel
   selector:
     matchLabels:
