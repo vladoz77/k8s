@@ -76,9 +76,6 @@ spec:
         - mountPath: /var/lib/grafana/dashboards/k8s-pods.json
           name: grafana-dashboard-k8s-pods-pv
           subPath: k8s-pods.json
-        - mountPath: /var/lib/grafana/dashboards/k8s-nodes.json
-          name: grafana-dashboard-k8s-nodes-pv
-          subPath: k8s-nodes.json
         - mountPath: /var/lib/grafana/dashboards/argocd.json
           name: grafana-dashboard-argocd-pv
           subPath: argocd.json
@@ -88,6 +85,9 @@ spec:
         - mountPath: /var/lib/grafana/dashboards/calico.json
           name: grafana-dashboard-calico-pv
           subPath: calico.json
+        - mountPath: /var/lib/grafana/dashboards/loki.json
+          name: grafana-dashboard-loki
+          subPath: loki.json
 
       volumes:
       - name: grafana-pv
@@ -107,9 +107,6 @@ spec:
       - name: grafana-dashboard-k8s-pods-pv
         configMap:
           name: grafana-dashboard-k8s-pods
-      - name: grafana-dashboard-k8s-nodes-pv
-        configMap:
-          name: grafana-dashboard-k8s-nodes
       - name: grafana-dashboard-argocd-pv
         configMap:
           name: grafana-dashboard-argocd
@@ -119,6 +116,9 @@ spec:
       - name: grafana-dashboard-calico-pv
         configMap:
           name: grafana-dashboard-calico
+      - name: grafana-dashboard-loki
+        configMap:
+          name: grafana-dashboard-loki
 
 
 
