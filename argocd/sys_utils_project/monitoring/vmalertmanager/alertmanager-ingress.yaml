@@ -5,11 +5,11 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-  - host: "mon.home.local"
+  - host: "alertmanager.home.local"
     http:
       paths:
       - pathType: Prefix
-        path: /alertmanager
+        path: /
         backend:
           service:
             name: alertmanager-service-headless
