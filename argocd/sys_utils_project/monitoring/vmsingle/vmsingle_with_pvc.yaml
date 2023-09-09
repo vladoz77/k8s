@@ -8,6 +8,7 @@ spec:
     tag: v1.93.3
   extraArgs:
     http.pathPrefix: /vm
+    dedup.minScrapeInterval: 60s
   retentionPeriod: "14"
   logFormat: json
   removePvcAfterDelete: true

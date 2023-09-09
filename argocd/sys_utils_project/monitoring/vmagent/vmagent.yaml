@@ -8,9 +8,14 @@ spec:
     tag: v1.93.3
   serviceAccountName: vmagent
   selectAllByDefault: true
-  scrapeInterval: 15s
+  serviceScrapeNamespaceSelector: {}
+  podScrapeNamespaceSelector: {}
+  podScrapeSelector: {}
+  serviceScrapeSelector: {}
+  scrapeInterval: 60s
   logFormat: json
-  replicaCount: 1
+  replicaCount: 2
+  vmAgentExternalLabelName: vmagent-ha
   resources:
     limits:
       cpu: 200m
@@ -25,3 +30,10 @@ spec:
     promscrape.streamParse: "true"
   remoteWrite:
   - url: "http://vmsingle-vm.monitoring.svc:8429/vm/api/v1/write"
+  statefulMode: true
+  statefulStorage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+            requests:
+              storage: 2Gi
