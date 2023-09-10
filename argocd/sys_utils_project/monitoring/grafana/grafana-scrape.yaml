@@ -8,6 +8,7 @@ metadata:
 spec:
   endpoints:
   - port: http-grafana
+    path: grafana/metrics
   selector:
     matchLabels:
       app.kubernetes.io/name: grafana-service
