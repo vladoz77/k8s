@@ -9,7 +9,6 @@ data:
       "annotations": {
         "list": [
           {
-            "$$hashKey": "object:75",
             "builtIn": 1,
             "datasource": {
               "type": "datasource",
@@ -29,36 +28,469 @@ data:
           }
         ]
       },
-      "description": "Log Viewer Dashboard for Loki",
+      "description": "Container/Pod Log Dashboard(Loki as DataSource)",
       "editable": true,
       "fiscalYearStartMonth": 0,
-      "gnetId": 13639,
+      "gnetId": 16966,
       "graphTooltip": 0,
-      "id": 8,
-      "links": [
-        {
-          "$$hashKey": "object:59",
-          "icon": "bolt",
-          "includeVars": true,
-          "keepTime": true,
-          "tags": [],
-          "targetBlank": true,
-          "title": "View In Explore",
-          "type": "link",
-          "url": "/explore?orgId=1&left=[\"now-1h\",\"now\",\"Loki\",{\"expr\":\"{job=\\\"$app\\\"}\"},{\"ui\":[true,true,true,\"none\"]}]"
-        },
-        {
-          "$$hashKey": "object:61",
-          "icon": "external link",
-          "tags": [],
-          "targetBlank": true,
-          "title": "Learn LogQL",
-          "type": "link",
-          "url": "https://grafana.com/docs/loki/latest/logql/"
-        }
-      ],
+      "id": 14,
+      "links": [],
       "liveNow": false,
       "panels": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "description": "Total  Count of log lines in the specified time range",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "rgb(31, 255, 7)",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "rgb(31, 255, 7)",
+                    "value": null
+                  },
+                  {
+                    "color": "rgb(31, 255, 7)",
+                    "value": 10
+                  },
+                  {
+                    "color": "rgb(31, 255, 7)",
+                    "value": 50
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 11,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", stream=~\"$stream\", pod=~\"$pod\"})[$__interval]))",
+              "hide": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Total  Count of logs",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "description": "Total Count: of $searchable_pattern in the specified time range",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 6,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "sum"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", stream=~\"$stream\", pod=~\"$pod\"} |~ \"(?i)$searchable_pattern\")[$__interval]))",
+              "hide": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Count: of $searchable_pattern",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "description": "Live logs is a like 'tail -f' in a real time",
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 2,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": true,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "{namespace=\"$namespace\", pod=~\"$pod\", stream=~\"$stream\"} |~ \"(?i)$searchable_pattern\" ",
+              "hide": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Live logs",
+          "type": "logs"
+        },
+        {
+          "aliasColors": {
+            "stderr": "#C4162A",
+            "stdout": "#37872D"
+          },
+          "breakPoint": "50%",
+          "combine": {
+            "label": "Others",
+            "threshold": 0
+          },
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "#299c46",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "fontSize": "80%",
+          "format": "short",
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 0,
+            "y": 12
+          },
+          "id": 19,
+          "legend": {
+            "header": "Total Count",
+            "percentage": true,
+            "percentageDecimals": 2,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "values": true
+          },
+          "legendType": "right",
+          "links": [],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pieType": "pie",
+          "pluginVersion": "7.0.4",
+          "strokeWidth": "1.5",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", pod=~\"$pod\"})[$__interval])) by (stream)",
+              "hide": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Total count of stderr / stdout pie",
+          "type": "piechart",
+          "valueName": "total"
+        },
+        {
+          "aliasColors": {},
+          "breakPoint": "50%",
+          "combine": {
+            "label": "Others",
+            "threshold": 0
+          },
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "decimals": 0,
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "fontSize": "80%",
+          "format": "short",
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 9,
+            "y": 12
+          },
+          "id": 20,
+          "interval": "1m",
+          "legend": {
+            "header": "total count",
+            "percentage": true,
+            "show": true,
+            "sort": "total",
+            "sortDesc": true,
+            "values": true
+          },
+          "legendType": "right",
+          "links": [],
+          "maxDataPoints": "",
+          "nullPointMode": "connected",
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true
+            },
+            "pieType": "pie",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pieType": "donut",
+          "pluginVersion": "6.4.3",
+          "strokeWidth": "0.4",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", pod=~\"$pod\", stream=~\"$stream\"} |~ \"(?i)$searchable_pattern\")[$__interval])) by (pod)",
+              "refId": "A"
+            }
+          ],
+          "title": "Matched word: \"$searchable_pattern\" donut",
+          "type": "piechart",
+          "valueName": "total"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "color": "green",
+                      "text": "0"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "max": 100,
+              "min": 0,
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 18,
+            "y": 12
+          },
+          "id": 9,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": false
+          },
+          "pluginVersion": "9.1.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", stream=~\"$stream\", pod=~\"$pod\"} |~ \"(?i)$searchable_pattern\")[$__interval])) * 100 / sum(count_over_time(({namespace=\"$namespace\", stream=~\"$stream\", pod=~\"$pod\"})[$__interval]))",
+              "hide": false,
+              "refId": "A"
+            }
+          ],
+          "title": "\"$searchable_pattern\" Percentage for specified time",
+          "type": "gauge"
+        },
         {
           "aliasColors": {},
           "bars": true,
@@ -68,6 +500,7 @@ data:
             "type": "loki",
             "uid": "P982945308D3682D1"
           },
+          "decimals": 0,
           "fieldConfig": {
             "defaults": {
               "links": []
@@ -75,26 +508,35 @@ data:
             "overrides": []
           },
           "fill": 1,
-          "fillGradient": 0,
+          "fillGradient": 1,
           "gridPos": {
-            "h": 3,
-            "w": 24,
+            "h": 9,
+            "w": 12,
             "x": 0,
-            "y": 0
+            "y": 19
           },
           "hiddenSeries": false,
-          "id": 6,
+          "id": 18,
+          "interval": "1m",
           "legend": {
+            "alignAsTable": true,
             "avg": false,
-            "current": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
             "max": false,
             "min": false,
-            "show": false,
+            "rightSide": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
             "total": false,
-            "values": false
+            "values": true
           },
           "lines": false,
-          "linewidth": 1,
+          "linewidth": 3,
+          "links": [],
+          "maxDataPoints": "",
           "nullPointMode": "null",
           "options": {
             "alertThreshold": true
@@ -114,16 +556,16 @@ data:
                 "type": "loki",
                 "uid": "P982945308D3682D1"
               },
-              "expr": "sum(count_over_time({job=\"$app\"} |= \"$search\" [$__interval]))",
-              "legendFormat": "",
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", pod=~\"$pod\", stream=~\"$stream\"} |~ \"(?i)$searchable_pattern\")[$__interval])) by (pod)",
               "refId": "A"
             }
           ],
           "thresholds": [],
           "timeRegions": [],
+          "title": "Matched word: \"$searchable_pattern\" historical",
           "tooltip": {
             "shared": true,
-            "sort": 0,
+            "sort": 2,
             "value_type": "individual"
           },
           "type": "graph",
@@ -134,13 +576,15 @@ data:
           },
           "yaxes": [
             {
-              "$$hashKey": "object:168",
+              "$$hashKey": "object:425",
+              "decimals": 0,
               "format": "short",
+              "label": "Count",
               "logBase": 1,
-              "show": false
+              "show": true
             },
             {
-              "$$hashKey": "object:169",
+              "$$hashKey": "object:426",
               "format": "short",
               "logBase": 1,
               "show": false
@@ -151,69 +595,243 @@ data:
           }
         },
         {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
           "datasource": {
             "type": "loki",
             "uid": "P982945308D3682D1"
           },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 10,
           "gridPos": {
-            "h": 25,
-            "w": 24,
-            "x": 0,
-            "y": 3
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 19
           },
-          "id": 2,
-          "maxDataPoints": "",
+          "hiddenSeries": false,
+          "id": 10,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxDataPoints": 100,
+          "nullPointMode": "null",
           "options": {
-            "dedupStrategy": "none",
-            "enableLogDetails": true,
-            "prettifyLogMessage": false,
-            "showCommonLabels": false,
-            "showLabels": false,
-            "showTime": true,
-            "sortOrder": "Descending",
-            "wrapLogMessage": false
+            "alertThreshold": true
           },
+          "percentage": false,
+          "pluginVersion": "9.1.0",
+          "pointradius": 0.5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
           "targets": [
             {
               "datasource": {
                 "type": "loki",
                 "uid": "P982945308D3682D1"
               },
-              "expr": "{job=\"$app\"} |= \"$search\" | logfmt",
+              "expr": "sum(rate(({namespace=\"$namespace\", stream=~\"$stream\", pod=~\"$pod\"} |~ \"(?i)$searchable_pattern\")[30s])) by (pod)",
               "hide": false,
-              "legendFormat": "",
               "refId": "A"
             }
           ],
-          "transparent": true,
-          "type": "logs"
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "\"$searchable_pattern\" Rate per Pod",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2804",
+              "format": "short",
+              "logBase": 10,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2805",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "loki",
+            "uid": "P982945308D3682D1"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": [],
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "fill": 2,
+          "fillGradient": 4,
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 28
+          },
+          "hiddenSeries": false,
+          "id": 7,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "maxDataPoints": 100,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.1.0",
+          "pointradius": 2,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "$$hashKey": "object:154",
+              "alias": "{stream=\"stderr\"} stderr",
+              "color": "#C4162A",
+              "legend": false,
+              "linewidth": 2
+            },
+            {
+              "$$hashKey": "object:220",
+              "alias": "{stream=\"stdout\"} stdout",
+              "color": "#56A64B",
+              "legend": false,
+              "linewidth": 2
+            }
+          ],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "P982945308D3682D1"
+              },
+              "expr": "sum(count_over_time(({namespace=\"$namespace\", pod=~\"$pod\"})[$__interval])) by (stream)",
+              "hide": false,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Count of stderr / stdout historical",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:188",
+              "format": "none",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:189",
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
         }
       ],
-      "refresh": false,
+      "refresh": "1m",
       "schemaVersion": 37,
       "style": "dark",
-      "tags": [],
+      "tags": [
+        "Loki",
+        "logging"
+      ],
       "templating": {
         "list": [
           {
             "current": {
               "selected": false,
-              "text": "argocd/argocd-application-controller",
-              "value": "argocd/argocd-application-controller"
+              "text": "loki",
+              "value": "loki"
             },
             "datasource": {
               "type": "loki",
               "uid": "P982945308D3682D1"
             },
-            "definition": "label_values(job)",
+            "definition": "label_values({namespace=~\".+\"}, namespace)",
             "hide": 0,
             "includeAll": false,
-            "label": "App",
+            "label": "Namespace",
             "multi": false,
-            "name": "app",
+            "name": "namespace",
             "options": [],
-            "query": "label_values(job)",
-            "refresh": 1,
+            "query": "label_values({namespace=~\".+\"}, namespace)",
+            "refresh": 2,
             "regex": "",
             "skipUrlSync": false,
             "sort": 0,
@@ -225,31 +843,84 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "",
-              "value": ""
+              "text": "loki-ingester-0",
+              "value": "loki-ingester-0"
+            },
+            "datasource": {
+              "type": "loki",
+              "uid": "P982945308D3682D1"
+            },
+            "definition": "label_values({namespace=\"$namespace\"}, pod)",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Pod",
+            "multi": false,
+            "name": "pod",
+            "options": [],
+            "query": "label_values({namespace=\"$namespace\"}, pod)",
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            "datasource": {
+              "type": "loki",
+              "uid": "P982945308D3682D1"
+            },
+            "definition": "label_values({namespace=\"$namespace\"}, stream)",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Stream",
+            "multi": false,
+            "name": "stream",
+            "options": [],
+            "query": "label_values({namespace=\"$namespace\"}, stream)",
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": "table",
+              "value": "table"
             },
             "hide": 0,
-            "label": "String Match",
-            "name": "search",
+            "label": "Search (case insensitive)",
+            "name": "searchable_pattern",
             "options": [
               {
                 "selected": true,
-                "text": "",
-                "value": ""
+                "text": "table",
+                "value": "table"
               }
             ],
-            "query": "",
+            "query": "table",
             "skipUrlSync": false,
             "type": "textbox"
           }
         ]
       },
       "time": {
-        "from": "now-1h",
+        "from": "now-30m",
         "to": "now"
       },
       "timepicker": {
-        "hidden": false,
         "refresh_intervals": [
           "10s",
           "30s",
@@ -263,8 +934,8 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Logs",
-      "uid": "sadlil-loki-apps-dashboard1",
+      "title": "Container Log Dashboard",
+      "uid": "fRIvzUZMz",
       "version": 1,
       "weekStart": ""
     }
