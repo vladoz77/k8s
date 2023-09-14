@@ -88,6 +88,9 @@ spec:
         - mountPath: /var/lib/grafana/dashboards/loki.json
           name: grafana-dashboard-loki
           subPath: loki.json
+        - mountPath: /var/lib/grafana/dashboards/nodeexporter.json
+          name: grafana-dashboard-nodeexporter
+          subPath: nodeexporter.json
 
       volumes:
       - name: grafana-pv
@@ -119,8 +122,9 @@ spec:
       - name: grafana-dashboard-loki
         configMap:
           name: grafana-dashboard-loki
-
-
+      - name: grafana-dashboard-nodeexporter
+        configMap:
+          name: grafana-dashboard-nodeexporter
 
 
 
