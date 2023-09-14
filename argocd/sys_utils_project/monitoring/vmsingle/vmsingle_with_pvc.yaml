@@ -13,7 +13,6 @@ spec:
   logFormat: json
   removePvcAfterDelete: true
   storage:
-    storageClassName: nfs
     accessModes:
     - ReadWriteOnce
     resources:
