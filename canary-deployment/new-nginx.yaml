@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: new-nginx # change labels to new
+    type: canary # add label type=canary
+  name: new-nginx
+spec:
+  replicas: 1 # change number of replicas
+  selector:
+    matchLabels:
+      app: new-nginx
+      type: canary
+  template:
+    metadata:
+      labels:
+        app: new-nginx # change labels to new
+        type: canary # add label type=canary
+    spec:
+      containers:
+      - image: nginx:latest # change version nginx
+        name: nginx
+        resources: {}
+        volumeMounts: # add volume mount with new config
+          - name: html-vol
+            mountPath: /usr/share/nginx/html
+      volumes: # add volume  with new config
+        - name: html-vol
+          configMap:
+            name: new-nginx

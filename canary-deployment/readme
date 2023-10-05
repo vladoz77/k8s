@@ -1,0 +1,16 @@
+# Create old-nginx deployment
+k create deployment old-nginx --image nginx:1.14 --replicas 3 --dry-run -o yaml > canary-deployment/old-nginx.yaml
+
+# Create service
+k expose deployment old-nginx --selector type=canary --port 80  --dry-run -o yaml > old-nginx-svc.yaml
+
+# From pod old-nginx copy index.html
+kubectl cp old-nginx-9c486b8c5-gdxlc:/usr/share/nginx/html/index.html index.html
+
+# Create and apply config map
+k create cm new-nginx --from-file index.html --dry-run -o yaml > new-nginx-cm.yaml
+k apply -f new-nginx-cm.yaml
+
+# Scale new-nginx deployment and delete old-nginx dep
+k scale deployment new-nginx --replicas 3
+k delete deployments.apps old-nginx

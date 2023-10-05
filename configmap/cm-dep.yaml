@@ -1,0 +1,18 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: html
+  namespace: default
+data: 
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Тестовая страница</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+      <h1>Сервер $SERVER</h1>
+    </body>
+    </html>
+  
