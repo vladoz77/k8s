@@ -1,17 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: alertmanager-ingress
+  name: alertmanager
   namespace: monitoring
 spec:
   rules:
-  - host: "alertmanager.home.local"
+  - host: "mon.home.local"
     http:
       paths:
       - pathType: Prefix
         path: /
         backend:
           service:
-            name: alertmanager-service-headless
+            name: vmalertmanager-vm
             port:
               number: 9093

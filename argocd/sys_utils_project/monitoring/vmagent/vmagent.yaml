@@ -15,7 +15,7 @@ spec:
   scrapeInterval: 60s
   logFormat: json
   replicaCount: 2
-  vmAgentExternalLabelName: vmagent-ha
+  vmAgentExternalLabelName: vmagentha
   resources:
     limits:
       cpu: 200m

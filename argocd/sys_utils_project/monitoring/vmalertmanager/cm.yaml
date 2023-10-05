@@ -1,9 +1,8 @@
-kind: ConfigMap
 apiVersion: v1
+kind: Secret
 metadata:
-  name: alertmanager-cm
-  namespace: monitoring
-data:
+  name: alertmanager-config
+stringData:
   alertmanager.yaml: |
     global:
       resolve_timeout: 5m
@@ -14,7 +13,6 @@ data:
       repeat_interval: 12h
       receiver: 'webhook'
     receivers:
-      - name: 'webhook'
-        webhook_configs:
-          - url: 'http://alertmanagerwh:30500/'
-
+    - name: 'webhook'
+      webhook_configs:
+      - url: 'http://alertmanagerwh:30500/'
