@@ -1,0 +1,11 @@
+secretGenerator:
+  - name: mysql-secret
+    literals:
+      - username=mysqluser
+      - password=password
+      - db_name=db
+
+resources:
+  - mysql-st.yaml
+  - wordpress-dep.yaml
+  - ingress.yaml

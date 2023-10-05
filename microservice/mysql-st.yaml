@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mysql
+spec:
+  selector:
+    app: wordpress
+    component: mysql
+  ports:
+  - port: 3306
+  clusterIP: None
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+    component: mysql
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      component: mysql
+  serviceName: wordpress-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        component: mysql
+    spec:
+      containers:
+      - name: wordpress-mysql
+        image: mysql:5.7
+        env:
+          - name: MYSQL_RANDOM_ROOT_PASSWORD
+            value: "1"
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: password
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: username
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: db_name
+        ports:
+        - containerPort: 3306
+          name: db
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
