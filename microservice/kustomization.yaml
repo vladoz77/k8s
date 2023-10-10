@@ -4,8 +4,8 @@ secretGenerator:
       - username=mysqluser
       - password=password
       - db_name=db
-
+namespace: wordpress
 resources:
   - mysql-st.yaml
   - wordpress-dep.yaml
-  - ingress.yaml
+  - istio.yaml

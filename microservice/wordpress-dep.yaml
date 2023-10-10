@@ -41,13 +41,10 @@ spec:
         app: wordpress
         component: frontend
     spec:
-      volumes:
-        - name: wordpress-vol
-          persistentVolumeClaim:
-            claimName: wordpress-pvc
+      
       containers:
       - name: wordpress
-        image: wordpress:4.8-apache
+        image: wordpress:6.2.1-apache
         env:
           - name: WORDPRESS_DB_HOST
             value: wordpress-mysql
@@ -69,9 +66,13 @@ spec:
         resources: {}
         ports:
         - containerPort: 80
+          name: wordpress
         volumeMounts:
           - name: wordpress-vol
             mountPath: /var/www/html
-          
+      volumes:
+        - name: wordpress-vol
+          persistentVolumeClaim:
+            claimName: wordpress-pvc    
 
 

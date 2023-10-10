@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: wordpress-route
+spec:
+  hosts:
+  - web.home.local
+  gateways:
+  - web-gateway
+  http:
+  - name: "web-routes"
+    match:
+      - uri:
+          prefix: /
+    route:
+    - destination:
+        host: web
+        port:
+          number: 8080
