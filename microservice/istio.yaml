@@ -26,9 +26,32 @@ spec:
   gateways:
   - wordpress-gateway
   http:
-  - route:
+  - match:
+      - uri:
+          prefix: /
+    route:
     - destination:
         host: wordpress
         port:
           number: 80
 
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: sql-route
+  namespace: wordpress
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - wordpress-gateway
+  http:
+  - match:
+      - port: 3306
+    route:
+    - destination:
+        host: wordpress-mysql
+        port:
+          number: 3306

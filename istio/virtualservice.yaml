@@ -1,19 +1,18 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: wordpress-route
+  name: birdapp-route
 spec:
   hosts:
-  - web.home.local
+  - bird.home.local
   gateways:
-  - web-gateway
+  - bird-gateway
   http:
-  - name: "web-routes"
-    match:
+  - match:
       - uri:
           prefix: /
     route:
     - destination:
-        host: web
+        host: birdapp-svc.birdapp.svc.cluster.local
         port:
-          number: 8080
+          number: 9000
