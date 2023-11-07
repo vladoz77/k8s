@@ -13,6 +13,6 @@ spec:
           prefix: /
     route:
     - destination:
-        host: birdapp-svc.birdapp.svc.cluster.local
+        host: birdapp-svc.default.svc.cluster.local
         port:
           number: 9000
