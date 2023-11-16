@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nettols-1
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: node1
+  containers:
+  - command:
+    - sleep
+    - infinity
+    image: travelping/nettools
+    name: fedora
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nettols-2
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: node3
+  containers:
+  - command:
+    - sleep
+    - infinity
+    image: travelping/nettools
+    name: fedora
