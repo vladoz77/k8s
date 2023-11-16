@@ -19,6 +19,7 @@ metadata:
     app: wordpress
     component: mysql
 spec:
+  podManagementPolicy: Parallel
   selector:
     matchLabels:
       app: wordpress

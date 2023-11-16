@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: new-index-cm
+data:
+  index.html: |
+    new-nginx
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: new-nginx
+  name: new-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: new-nginx
+  template:
+    metadata:
+      labels:
+        app: new-nginx
+    spec:
+      containers:
+      - image: nginx:1.13
+        name: nginx
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        resources: {}
+        ports:
+          - name: new-nginx-port
+            containerPort: 80
+        volumeMounts:
+          - name: index
+            mountPath: /usr/share/nginx/html
+      volumes:
+        - name: index
+          configMap:
+            name: new-index-cm
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: new-nginx-svc
+spec:
+  selector:
+    app: new-nginx
+  ports:
+  - port: 8080
+    targetPort: new-nginx-port
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: new-nginx-ing
+  labels:
+    name: new-nginx-ing
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "10"
+spec:
+  rules:
+  - host: old-nginx.home.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: new-nginx-svc
+            port: 
+              number: 8080
+
+
+          
+          
