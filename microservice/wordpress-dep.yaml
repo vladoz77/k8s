@@ -19,6 +19,7 @@ spec:
     requests:
       storage: 2Gi
   volumeMode: Filesystem
+  storageClassName: csi-s3
   accessModes:
     - ReadWriteOnce
 
