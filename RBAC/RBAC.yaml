@@ -1,0 +1,22 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: support-role
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: support-RoleBinding
+subjects:
+- kind: User
+  name: vlad
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: support-role
