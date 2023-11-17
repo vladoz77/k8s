@@ -14,7 +14,7 @@ metadata:
   name: support-RoleBinding
 subjects:
 - kind: User
-  name: vlad
+  name: user
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   apiGroup: rbac.authorization.k8s.io

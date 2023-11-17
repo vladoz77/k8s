@@ -4,7 +4,7 @@ Create user in kubernetes
 openssl genrsa -out user.key 2048
 
 2. Create a certificate signing request
-openssl req -new -key user.key -out user.csr -subj "/CN=<username>/O=<orgname>"
+openssl req -new -key user.key -out user.csr -subj "/CN=user/O=support"
 
 3. Create CSR object in k8s
 cat <<EOF | kubectl apply -f -
@@ -49,7 +49,7 @@ roleRef:
   name: support-role
 
 6. Get User Credential
-kubectl get csr mynewuser -o jsonpath='{.status.certificate}'| base64 -d > user.crt
+kubectl get csr user-csr -o jsonpath='{.status.certificate}'| base64 -d > user.crt
 
 7. Create new user with user.crt and user.key
 kubectl config set-credentials user --client-certificate=user.crt --client-key=user.key
