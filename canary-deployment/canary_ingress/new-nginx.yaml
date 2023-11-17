@@ -4,7 +4,7 @@ metadata:
   name: new-index-cm
 data:
   index.html: |
-    new-nginx
+    $POD_NAME
 
 ---
 apiVersion: apps/v1
@@ -23,25 +23,39 @@ spec:
       labels:
         app: new-nginx
     spec:
-      containers:
-      - image: nginx:1.13
-        name: nginx
+      initContainers:
+      - image: bhgedigital/envsubst
+        name:  envsubst
         env:
           - name: POD_NAME
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+        args:
+          - sh
+          - -c
+          - cat /tmp/index.html | envsubst > /tmp/html/index.html
+        volumeMounts:
+          - name:  index
+            mountPath:  /tmp/
+          - name:  www
+            mountPath: /tmp/html/
+      containers:
+      - image: nginx:1.13
+        name: nginx
         resources: {}
         ports:
           - name: new-nginx-port
             containerPort: 80
         volumeMounts:
-          - name: index
+          - name: www
             mountPath: /usr/share/nginx/html
       volumes:
         - name: index
           configMap:
             name: new-index-cm
+        - name: www
+          emptyDir: {}
 
 ---
 apiVersion: v1

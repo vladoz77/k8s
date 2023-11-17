@@ -8,5 +8,6 @@
             "file:///home/vlad/k8s/nginx-sidecard.yaml",
             "file:///home/vlad/k8s/busybox.yaml"
         ]
-    }
+    },
+    "sarif-viewer.connectToGithubCodeScanning": "off"
 }
