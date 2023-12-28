@@ -34,21 +34,32 @@ spec:
         - name: www
           persistentVolumeClaim:
             claimName: pvc-www
-        # - name: index
-        #   configMap:
-        #     name: html
-      # initContainers:
-      # - name: init-config
-      #   image: busybox:1.28
-      #   command: ['sh', '-c', 'cp /html-tmp/index.html /html/index.html']
-      #   volumeMounts:
-      #    - name: index
-      #      mountPath: /html-tmp
-      #    - name: www
-      #      mountPath: /html
+        - name: index
+          emptyDir: {}
+      initContainers:
+      - name: init-config-pod-name
+        image: busybox:1.28
+        command: ['sh', '-c', "echo ${MY_POD_NAME} >> /html-tmp/index.html "]
+        env:
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+         - name: index
+           mountPath: /html-tmp
+      - name: init-config
+        image: busybox:1.28
+        command: ['sh', '-c', 'cp /html-tmp/index.html /html/index.html']
+        volumeMounts:
+         - name: index
+           mountPath: /html-tmp
+         - name: www
+           mountPath: /html
       containers:
       - name:  nginx
         image:  nginx
+        
         resources:
           requests:
             cpu: 100m
@@ -74,7 +85,6 @@ metadata:
   labels:
     app: pvc-www
 spec:
-  storageClassName: nfs
   accessModes:
   - ReadWriteOnce
   resources:
