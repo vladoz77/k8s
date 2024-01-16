@@ -20,8 +20,8 @@ kubectl describe job hello-world-job
 
 
 #Get the logs from stdout from the Job Pod
-kubectl get pods -l job-name=hello-world-job 
-kubectl logs PASTE_POD_NAME_HERE
+POD=$(kubectl get pods -l job-name=hello-world-job | grep hello | head -n1 | awk '{print$1}')
+kubectl logs $POD
 
 
 #Our Job is completed, but it's up to use to delete the Pod or the Job.
