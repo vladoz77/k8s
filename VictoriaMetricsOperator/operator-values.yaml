@@ -1,0 +1,13 @@
+nameOverride: vm-operator
+fullnameOverride: vm-operator
+
+operator:
+  disable_prometheus_converter: true
+
+resources:
+  limits:
+    cpu: 120m
+    memory: 320Mi
+  requests:
+    cpu: 80m
+    memory: 120Mi

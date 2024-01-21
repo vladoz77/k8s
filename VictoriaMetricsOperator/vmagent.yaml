@@ -1,0 +1,26 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: vm
+  namespace: monitoring
+spec:
+  selectAllByDefault: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "350Mi"
+    limits:
+      cpu: "500m"
+      memory: "850Mi"
+  extraArgs:
+    memory.allowedPercent: "40"
+  remoteWrite:
+    - url: "http://vminsert-vm.monitoring.svc:8480/api/v1/write"
+  statefulMode: true
+  statefulStorage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+            requests:
+              storage: 10Gi
