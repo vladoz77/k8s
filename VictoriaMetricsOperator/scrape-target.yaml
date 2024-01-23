@@ -42,35 +42,26 @@ spec:
       replacement: cadvisor
     - source_labels: [__meta_kubernetes_node_name]
       target_label: node
-  # metricRelabelConfigs:
-  #       - action: drop
-  #         regex:  container_cpu_(cfs_throttled_seconds_total|load_average_10s|system_seconds_total|user_seconds_total)
-  #         sourceLabels:
-  #           - __name__
-  #       - action: drop
-  #         regex: container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)
-  #         sourceLabels:
-  #           - __name__
-  #       - action: drop
-  #         regex: container_memory_(mapped_file|swap)
-  #         sourceLabels:
-  #           - __name__
-  #       - action: drop
-  #         regex: container_(file_descriptors|tasks_state|threads_max)
-  #         sourceLabels:
-  #           - __name__
-  #       - action: drop
-  #         regex: container_spec.*
-  #         sourceLabels:
-  #           - __name__
-  #       - action: drop
-  #         regex: .+;
-  #         sourceLabels:
-  #           - id
-  #           - pod
-  
+  metricRelabelConfigs:
+        - action: replace
+          source_labels: [pod]
+          regex: '(.+)'
+          target_label: pod_name
+          replacement: '${1}'
+        - action: replace
+          source_labels: [container]
+          regex: '(.+)'
+          target_label: container_name
+          replacement: '${1}'
+        - action: replace
+          target_label: name
+          replacement: k8s_stub
+        - action: replace
+          source_labels: [id]
+          regex: '^/system\.slice/(.+)\.service$'
+          target_label: systemd_service_name
+          replacement: '${1}'
 ---
-
 # kube-controller
 apiVersion: v1
 kind: Service
@@ -87,7 +78,6 @@ spec:
   - port: 10257
     targetPort: 10257
     name: metrics
-
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
@@ -110,7 +100,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: kube-controller-manager-metrics
 ---
-
 #Kube-dns
 apiVersion: v1
 kind: Service
@@ -149,7 +138,6 @@ spec:
     matchLabels:
        app.kubernetes.io/name: kube-dns-service
 ---
-
 #kube-proxy
 apiVersion: v1
 kind: Service
@@ -168,7 +156,6 @@ spec:
   selector:
     k8s-app: kube-proxy
   clusterIP: None
-
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
@@ -187,7 +174,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: kube-proxy-metrics-service
 ---
-
 #kube-scheduller
 apiVersion: v1
 kind: Service
@@ -204,7 +190,6 @@ spec:
   - port: 10259
     targetPort: 10259
     name: metrics
-
 ---
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
@@ -227,7 +212,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: kube-scheduler-metrics
 ---
-
 #Kubelet
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMNodeScrape

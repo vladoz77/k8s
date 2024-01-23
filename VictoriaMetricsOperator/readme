@@ -1,0 +1,5 @@
+#Install vm-operator 
+helm install vmoperator vm/victoria-metrics-operator -n monitoring -f operator-values.yaml --create-namespace
+
+#Install grafana
+helm install grafana grafana/grafana -f grafana-values.yaml -n monitoring 

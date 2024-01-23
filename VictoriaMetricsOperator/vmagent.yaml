@@ -16,7 +16,7 @@ spec:
   extraArgs:
     memory.allowedPercent: "40"
   remoteWrite:
-    - url: "http://vminsert-vm.monitoring.svc:8480/api/v1/write"
+    - url: "http://vminsert-vm.monitoring.svc:8480/insert/0/prometheus/api/v1/write"
   statefulMode: true
   statefulStorage:
     volumeClaimTemplate:
