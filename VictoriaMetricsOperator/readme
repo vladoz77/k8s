@@ -1,4 +1,6 @@
 #Install vm-operator 
+helm repo add vm https://victoriametrics.github.io/helm-charts/
+helm repo update
 helm install vmoperator vm/victoria-metrics-operator -n monitoring -f operator-values.yaml --create-namespace
 
 #Install grafana
