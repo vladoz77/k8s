@@ -24,3 +24,185 @@ spec:
         resources:
             requests:
               storage: 10Gi
+
+---
+# default scrape target for k8s
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: apiserver
+  namespace: monitoring
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    port: https
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      serverName: kubernetes
+  jobLabel: component
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      component: apiserver
+      
+---
+#Cadvisor
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMNodeScrape
+metadata:
+  name: cadvisor
+  namespace: monitoring
+spec:
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  tlsConfig:
+    caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    insecureSkipVerify: true
+  interval: 30s
+  path: /metrics/cadvisor
+  scheme: https
+  scrapeTimeout: 5s
+  relabelConfigs:
+    - targetLabel: job
+      replacement: cadvisor
+    - sourceLabels: [__meta_kubernetes_node_name]
+      targetLabel: node
+  metricRelabelConfigs:
+        - action: replace
+          sourceLabels: [pod]
+          regex: '(.+)'
+          targetLabel: pod_name
+          replacement: '${1}'
+        - action: replace
+          sourceLabels: [container]
+          regex: '(.+)'
+          targetLabel: container_name
+          replacement: '${1}'
+        - action: replace
+          targetLabel: name
+          replacement: k8s_stub
+        - action: replace
+          sourceLabels: [id]
+          regex: '^/system\.slice/(.+)\.service$'
+          targetLabel: systemd_service_name
+          replacement: '${1}'
+
+---
+#Kube-controller
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: kube-controller-manager
+  namespace: monitoring
+spec:
+  podMetricsEndpoints:
+    - scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecureSkipVerify: true
+      relabelConfigs:
+        - sourceLabels:
+          - __address__
+          regex: (.+?)(\\:\\d+)?
+          replacement: $1:10257
+          action: replace
+          targetLabel: __address__
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      component: kube-controller-manager
+      tier: control-plane
+
+---
+#Kube-dcheduller
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: kube-scheduller
+  namespace: monitoring
+spec:
+  podMetricsEndpoints:
+    - scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecureSkipVerify: true
+      relabelConfigs:
+        - sourceLabels:
+          - __address__
+          regex: (.+?)(\\:\\d+)?
+          replacement: $1:10259
+          action: replace
+          targetLabel: __address__
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      component: kube-scheduler
+      tier: control-plane
+
+---
+#Kube-proxy
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: kube-proxy
+  namespace: monitoring
+spec:
+  podMetricsEndpoints:
+    - relabelConfigs:
+        - sourceLabels:
+          - __address__
+          regex: (.+?)(\\:\\d+)?
+          replacement: $1:10249
+          action: replace
+          targetLabel: __address__
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      k8s-app: kube-proxy
+
+---
+#Kubelet
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMNodeScrape
+metadata:
+  name: kubelet
+  namespace: monitoring
+spec:
+  bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  tlsConfig:
+    caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    insecureSkipVerify: true
+  honorLabels: true
+  interval: 30s
+  scheme: https
+  scrapeTimeout: 5s
+  relabelConfigs:
+        - replacement: kubelet
+          targetLabel: job
+
+---
+#Kube-dns
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: kube-dns
+  namespace: monitoring
+spec:
+  endpoints:
+    - port: metrics
+  namespaceSelector: 
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      k8s-app: kube-dns
