@@ -1,0 +1,43 @@
+fullnameOverride: keycloak
+nameOverride: keycloak
+replicas: 1
+
+serviceAccount:
+  create: true
+rbac:
+  create: false
+
+# args: 
+#   - -Dkeycloak.profile.feature.docker=enabled
+
+extraEnv: |
+  - name: KEYCLOAK_LOGLEVEL
+    value: DEBUG
+  - name: KEYCLOAK_USER
+    value: admin
+  - name: KEYCLOAK_PASSWORD
+    value: password
+  - name: PROXY_ADDRESS_FORWARDING
+    value: "true"
+
+ingress: 
+  enabled: true
+  # annotations:
+  #   cert-manager.io/cluster-issuer: ca-issuer
+  rules:
+    - host: keycloak.dev.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # tls: 
+  #   - hosts:
+  #     - keycloak.dev.local
+  #     secretName: keycloak-tls
+
+postgresql:
+  enabled: true
+  postgresqlUsername: keycloak
+  postgresqlPassword: keycloak
+  postgresqlDatabase: keycloak
+
+  
