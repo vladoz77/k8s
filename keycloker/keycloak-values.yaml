@@ -1,59 +1,30 @@
-fullnameOverride: keycloak
+replicaCount: 1
 nameOverride: keycloak
-replicas: 1
+fullnameOverride: keycloak
 
-serviceAccount:
-  create: false
-rbac:
-  create: false
+auth:
+  adminUser: admin
+  adminPassword: password
 
-# args: 
-#   - -Dkeycloak.profile.feature.docker=enabled
 
-extraEnv: |
-  - name: KC_CACHE
-    value: ispn
-  - name: KEYCLOAK_LOGLEVEL
-    value: INFO
-  - name: KC_CACHE_STACK
-    value: kubernetes
-  - name: KEYCLOAK_USER
-    value: admin
-  - name: KEYCLOAK_PASSWORD
-    value: password
-  - name: PROXY_ADDRESS_FORWARDING
+extraEnvVars:
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "false"
+  - name: KC_HOSTNAME_STRICT
+    value: "false"
+  - name: KEYCLOAK_ENABLE_HTTPS
+    value: "false"
+  - name: KEYCLOAK_PROXY
+    value: edge
+  - name: KEYCLOAK_PRODUCTION
     value: "true"
-  - name: JGROUPS_DISCOVERY_PROTOCOL
-    value: dns.DNS_PING
-  - name: KUBERNETES_NAMESPACE
-    valueFrom:
-      fieldRef:
-        apiVersion: v1
-        fieldPath: metadata.namespace
-  - name: JGROUPS_DISCOVERY_PROPERTIES
-    value: 'dns_query=keycloak-headless'
+  - name: PORT
+    value: "8080"
+  
 
-service:
-  httpPort: 8080
-  httpsPort: 8443
-
-ingress: 
-  enabled: true
-  # annotations:
-  #   cert-manager.io/cluster-issuer: ca-issuer
-  rules:
-    - host: keycloak.dev.local
-      paths:
-        - path: /auth/admin
-          pathType: Prefix
-  # tls: 
-  #   - hosts:
-  #     - keycloak.dev.local
-  #     secretName: keycloak-tls
+ingress:
+  enabled: false
+  
 
 postgresql:
   enabled: true
-  postgresqlUsername: keycloak
-  postgresqlPassword: keycloak
-
-  
