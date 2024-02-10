@@ -1,0 +1,22 @@
+production: true
+proxy: edge
+replicaCount: 2
+auth:
+  createAdminUser: true
+  adminUser: admin
+  adminPassword: admin
+proxyAddressForwarding: true
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hostname: keycloak.home.local
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
+  tls: true
+  extraTls:
+  - hosts:
+    - keycloak.home.local
+    secretName: keycloak.home.local-tls
+postgresql:
+  enabled: true
+  postgresqlPassword: password
