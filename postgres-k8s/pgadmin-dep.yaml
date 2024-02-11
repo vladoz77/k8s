@@ -71,7 +71,7 @@ metadata:
   name: data-pgadmin
   namespace: database
 spec:
-  storageClassName: nfs-client
+  # storageClassName: nfs-client
   resources:
     requests:
       storage: 2Gi

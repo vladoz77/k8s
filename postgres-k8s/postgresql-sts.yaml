@@ -13,39 +13,14 @@ spec:
 
 ---
 apiVersion: v1
-kind: Service
-metadata:
-  name: postgresql-svc-con
-  namespace: database
-spec:
-  type: LoadBalancer
-  selector:
-    app: postgresql-app
-    statefulset.kubernetes.io/pod-name: postgresql-sts-0
-  ports:
-  - port: 5432
-    targetPort: 5432
-
----
-apiVersion: v1
 kind: Secret
 metadata:
   name: pg-secret
   namespace: database
 type: Opaque
 stringData:
-  POSTGRES_USER: "postgres"
-  POSTGRES_PASSWORD: "secret"
-  
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: pg-config
-  namespace: database
-data:
-  POSTGRES_DB: "database"
-  PGDATA : /var/lib/postgresql/data/pgdata
+  username: "postgres"
+  password: "secret"
 
 ---
 apiVersion: apps/v1
@@ -64,19 +39,24 @@ spec:
       labels:
         app: postgresql-app
     spec:
-      volumes:
-        - name: postgresql-conf-volume
-          configMap:
-            name: postgresql-conf-file
       containers:
       - name: postgresql
         image: postgres:14
-        args: ["-c", "config_file=/etc/postgresql.conf"]
-        envFrom:
-          - configMapRef:
-              name: pg-config
-          - secretRef:
-              name: pg-secret
+        env:
+          - name: POSTGRES_DB
+            value: "db"
+          - name: PGDATA
+            value: "/var/lib/postgresql/data/pgdata"
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name:  pg-secret
+                key:  username
+          - name: POSTGRES_PASSWORD 
+            valueFrom:
+              secretKeyRef:
+                name:  pg-secret
+                key:  password
         resources:
           requests:
             memory: "265Mi"
@@ -90,15 +70,12 @@ spec:
         volumeMounts:
         - name: db
           mountPath: /var/lib/postgresql/data
-        - name: postgresql-conf-volume
-          mountPath: /etc/postgresql.conf
-          subPath: postgresql.conf
   volumeClaimTemplates:
   - metadata:
       name: db
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: nfs-client
+      # storageClassName: nfs-client
       resources:
         requests:
-          storage: 10Gi
+          storage: 5Gi
