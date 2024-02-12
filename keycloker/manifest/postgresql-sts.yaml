@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: keycloak
+spec:
+  selector:
+    app: postgresql-app
+  ports:
+  - port: 5432
+    targetPort: 5432
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-svc
+  namespace: keycloak
+spec:
+  clusterIP: None
+  selector:
+    app: postgresql-app
+  ports:
+  - port: 5432
+    targetPort: 5432
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pg-secret
+  namespace: keycloak
+type: Opaque
+stringData:
+  username: "postgres"
+  password: "secret"
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-sts
+  namespace: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: postgresql-app
+  serviceName: postgresql-svc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql-app
+    spec:
+      containers:
+      - name: postgresql
+        securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+        image: postgres:14
+        env:
+          - name: POSTGRES_DB
+            value: "keycloak"
+          - name: PGDATA
+            value: "/var/lib/postgresql/data/pgdata"
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name:  pg-secret
+                key:  username
+          - name: POSTGRES_PASSWORD 
+            valueFrom:
+              secretKeyRef:
+                name:  pg-secret
+                key:  password
+        # resources:
+        #   requests:
+        #     memory: "265Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "512Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 5432
+          name: psql
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: db
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      # storageClassName: nfs-client
+      resources:
+        requests:
+          storage: 5Gi
