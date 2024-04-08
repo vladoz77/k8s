@@ -100,12 +100,12 @@ metadata:
   name: pgadmin-ingress
   namespace: keycloak
   annotations:
-    cert-manager.io/cluster-issure:  issuer-ca
+    cert-manager.io/cluster-issure:  ca-issuer
 spec:
   tls:
   - hosts:
     - pgadmin.home.local
-    secretName: pgadmin-crt-secret
+    secretName: pgadmin-tls
   ingressClassName: nginx
   rules:
   - host: pgadmin.home.local

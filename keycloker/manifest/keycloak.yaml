@@ -51,7 +51,7 @@ spec:
   selector:
     matchLabels:
       app: keycloak
-  replicas: 1
+  replicas: 2
   serviceName: keycloak-headless
   podManagementPolicy: Parallel
   updateStrategy:
@@ -181,6 +181,13 @@ metadata:
   namespace: keycloak
   labels:
     name: keycloak-ingress
+  annotations:
+    cert-manager.io/cluster-issure:  ca-issuer
+    # следующие 4 строки аннотаций настраивают Sticky Sessions на ingress-e
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "86400"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "86400"
+    nginx.ingress.kubernetes.io/session-cookie-name: "keycloak-cookie"
 spec:
   rules:
   - host: keycloak.home.local
@@ -193,3 +200,7 @@ spec:
             name: keycloak-http
             port: 
               name: http
+  tls:
+    - hosts:
+      - keycloak.home.local
+      secretName: keycloak-tls
