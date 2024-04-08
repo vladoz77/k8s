@@ -28,13 +28,5 @@ postgresql:
     enabled: true
     auth:
         password: "postgres"
-    primary:
-        extendedConfiguration: |
-            max_connections = 500
-        persistence:
-          enabled: true
-          storageClass: standard
-          accessModes:
-            - ReadWriteOnce
 redis:
-    enabled: true
+    enabled: true   
