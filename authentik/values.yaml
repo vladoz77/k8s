@@ -17,6 +17,10 @@ authentik:
       from: authentik@gmail.com
 
 server:
+    service:
+        annotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "9300"
     ingress:
         # Specify kubernetes ingress controller class name
         ingressClassName: nginx 
