@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis-pod
+spec:
+  containers:
+  - name: redis-container
+    image: redis
+    ports:
+    - containerPort: 6379
+    volumeMounts:
+    - name: redis-data
+      mountPath: /src/redis/data
+    lifecycle:
+      preStop:
+        exec:
+          command: ["redis-cli shutdown"]
+  volumes:
+  - name: redis-data
+    emptyDir: {}
